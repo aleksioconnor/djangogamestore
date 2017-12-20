@@ -12,6 +12,8 @@ Our aim is to implement all mandatory features and in addition most of the extra
 The project will generally utilize JavaScript, jQuery HTML, CSS and Django. In addition, we will be using the node packet manager to allow the use of Gulp. Gulp will be used to automate the build process. We will test the compatibility of our stack with Heroku during the hello-world deployment and make further changes if necessary.
 ### 3.2 Outline of user interface
 We have come up with an initial outline of what our web-game store will look like.
+
+
 ![layout](https://version.aalto.fi/gitlab/pirdila1/wsd2017-gamestore/raw/fd71f894856efb5c99a8edc5c3f004acedf4921c/layout.png)
 
 ## 4. Process and time schedule
