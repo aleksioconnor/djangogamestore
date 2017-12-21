@@ -4,17 +4,25 @@
   * 544692 Alan Pirdil
 
 ## 2. Goal
-In this project, we will build an online gamestore utilizing django and jQuery. All memebers of our group have previous experience in front-end development, but no prior experience in developing with django. Learning goals include but are not restricted to learning the django framework, gain a deeper understanding of the jQuery framework, learn to use payment systems within a web project and learn to work efficiently with version control and small scale development projects. Technical goals include developing a stable, secure and easy-to-use online game store. We also plan to make the web platform visually compelling and user friendly. We have little experience with deploying to Heroku, so we look forward to working with the platform. 
+In this project, we will build an online gamestore utilizing django and jQuery. All memebers of our group have previous experience in front-end development, but no prior experience in developing with django. Learning goals include but are not restricted to learning the django framework, gain a deeper understanding of the jQuery framework, learn to use payment systems within a web project and learn to work efficiently with version control and small scale development projects. Technical goals include developing a stable, secure and easy-to-use online game store. We also plan to make the web platform visually compelling and user friendly. We have little experience with deploying to Heroku, so we look forward to working with the platform.
 
 ## 3. Development and plans
 Our aim is to implement all mandatory features and in addition most of the extra features.
+
 ### 3.1 Technology stack
 The project will generally utilize JavaScript, jQuery HTML, CSS and Django. In addition, we will be using the node packet manager to allow the use of Gulp. Gulp will be used to automate the build process. We will test the compatibility of our stack with Heroku during the hello-world deployment and make further changes if necessary.
-### 3.2 Outline of user interface
-We have come up with an initial outline of what our web-game store will look like.
+
+### 3.2 Models
+Our initial models include at least Player, Developer, Games. These models may need renaming, but they give a good general sign of the direction we are heading. Player's fields would include basic information (name, age, email, etc.), games purchased and their high scores to these games. Developers would have the same basic information but instead have games they have made listed in the fields. Our initial models include a Game model, but we will evaluate its necessity during the project. This Game models' fields would most importantly include basic information (name, developer who has made it, url, price) and global high score.
+
+### 3.3 Outline of user interface
+We have come up with an initial outline of what our web-game store front page will look like.
 
 
 ![layout](https://version.aalto.fi/gitlab/pirdila1/wsd2017-gamestore/raw/fd71f894856efb5c99a8edc5c3f004acedf4921c/layout.png)
+
+### 3.4 Security
+Our security measures include sanitizing user inputs and keeping the input fields fairly simple. We identify SQL injection, Javascript and jQuery scripts and authentication controlling as the biggest risks we need to handle in terms of Security.
 
 ## 4. Process and time schedule
 ### 4.1 Time schedule
