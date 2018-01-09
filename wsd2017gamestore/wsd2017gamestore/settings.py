@@ -26,7 +26,7 @@ SECRET_KEY = 'u8%crus(o8$-!=09d_so+gs)ces42mv&m(=hsonzv7w@6$xph2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['sd2017gamestore.herokuapp.com']
+ALLOWED_HOSTS = ['wsd2017gamestore.herokuapp.com']
 
 
 # Application definition
