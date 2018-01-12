@@ -1,3 +1,8 @@
+<form action="/hello/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
 <ul>
   {% for game in games %}
     <li>Pelin nimi: {{ game.name }}</li>
