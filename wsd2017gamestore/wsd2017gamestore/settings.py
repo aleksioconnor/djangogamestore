@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello.apps.HelloConfig',
+    'store.apps.StoreConfig',
     'registration.apps.RegistrationConfig',
     'login.apps.LoginConfig'
 ]
@@ -134,3 +134,6 @@ STATIC_URL = '/static/'
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
+
+# Login redirect
+LOGIN_REDIRECT_URL = '/store/'

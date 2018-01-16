@@ -27,4 +27,4 @@ def index(request):
 		'games' : games,
 		'form' : form
 	}
-	return render(request, 'hello/index.html', context)
+	return render(request, 'store/index.html', context)

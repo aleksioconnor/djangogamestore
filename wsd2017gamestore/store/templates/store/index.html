@@ -1,4 +1,4 @@
-<form action="/hello/" method="post"> <!-- POST-request the form to /hello/ -->
+<form action="/store/" method="post"> <!-- POST-request the form to /store/ -->
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit" />
@@ -8,3 +8,6 @@
     <li>Pelin nimi: {{ game.name }}, hinta: {{ game.price }}</li>
   {% endfor %}
 </ul>
+{% if user.is_authenticated %}
+	<div>User is logged in</div>
+{% endif %}

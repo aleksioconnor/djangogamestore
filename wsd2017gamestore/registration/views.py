@@ -1,4 +1,4 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
@@ -19,3 +19,6 @@ def signup(request):
 
         #TODO: allaoleva form:form contextina eteenpäin
     return render(request, 'registration/index.html', {'form': form})
+
+def logout_view(request):
+	logout(request)
