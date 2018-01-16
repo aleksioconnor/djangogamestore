@@ -13,7 +13,7 @@ def signup(request):
             user_type = form.cleaned_data.get('user_type')
             user = authenticate(username=username, password=raw_password, user_type=user_type)
             login(request, user)
-            return redirect('/hello/')
+            return redirect('/store/')
     else:
         form = SignUpForm()
 

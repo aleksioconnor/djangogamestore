@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store.apps.StoreConfig',
     'registration.apps.RegistrationConfig',
-    'login.apps.LoginConfig'
+    'authentication.apps.AuthenticationConfig'
 ]
 
 MIDDLEWARE = [
