@@ -1,0 +1,6 @@
+<h1>Tee uusi käyttäjä</h1>
+<form method="post"> <!-- POST-request the form -->
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>
