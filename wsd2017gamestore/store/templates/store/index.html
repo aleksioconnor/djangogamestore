@@ -5,7 +5,7 @@
 </form>
 <ul>
   {% for game in games %}
-    <li>Pelin nimi: {{ game.name }}, hinta: {{ game.price }}</li>
+    <li><a href='/gameview/'>Pelin nimi: {{ game.name }}, hinta: {{ game.price }}</a></li>
   {% endfor %}
 </ul>
 {% if user.is_authenticated %}
