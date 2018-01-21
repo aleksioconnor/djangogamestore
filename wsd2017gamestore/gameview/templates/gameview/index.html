@@ -8,8 +8,6 @@
    // Create the iframe
    var iframe = document.createElement('iframe');
    iframe.setAttribute('src', iframeSource);
-   iframe.style.width = 200 + 'px';
-   iframe.style.height = 250 + 'px';
    document.body.appendChild(iframe);
 
   function bindEvent(element, eventName, eventHandler) {
@@ -21,10 +19,35 @@
   };
 
   var message = document.getElementById('message');
+  var height;
+  var width;
 
   bindEvent(window, 'message', function (e) {
-      message.innerHTML = e.data.score;
-      console.log(e.data);
+      switch(e.data.messageType) {
+        case "SCORE":
+          message.innerHTML = e.data.score;
+          break;
+        case "SAVE":
+          message.innerHTML = e.data.messageType;
+          break;
+        case "LOAD_REQUEST":
+          message.innerHTML = e.data.messageType;
+          break;
+        case "LOAD":
+          message.innerHTML = e.data.messageType;
+          break;
+        case "ERROR":
+          message.innerHTML = e.data.info;
+          break;
+        case "SETTING":
+          // change the size of the iframe according to given options
+          iframe.style.height = e.data.options.height + 'px';
+          iframe.style.width = e.data.options.width + 'px';
+            break;
+        default:
+          message.innerHTML = "";
+      }
+      console.log(e.data.messageType);
   });
 
 </script>
