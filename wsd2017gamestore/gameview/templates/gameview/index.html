@@ -1,0 +1,30 @@
+<h2>Gameview</h2>
+<div id="frame_div"></div>
+<div id="message"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+
+  var iframeSource = 'http://webcourse.cs.hut.fi/example_game.html';
+   // Create the iframe
+   var iframe = document.createElement('iframe');
+   iframe.setAttribute('src', iframeSource);
+   iframe.style.width = 200 + 'px';
+   iframe.style.height = 250 + 'px';
+   document.body.appendChild(iframe);
+
+  function bindEvent(element, eventName, eventHandler) {
+     if (element.addEventListener){
+         element.addEventListener(eventName, eventHandler, false);
+     } else if (element.attachEvent) {
+         element.attachEvent('on' + eventName, eventHandler);
+     }
+  };
+
+  var message = document.getElementById('message');
+
+  bindEvent(window, 'message', function (e) {
+      message.innerHTML = e.data.score;
+      console.log(e.data);
+  });
+
+</script>
