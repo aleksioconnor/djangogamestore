@@ -3,8 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 USER_TYPES = (
-    (1, ("Developer")),
-    (2, ("Customer"))
+    ("Developer", ("Developer")),
+    ("Player", ("Customer"))
 )
 
 class SignUpForm(UserCreationForm):

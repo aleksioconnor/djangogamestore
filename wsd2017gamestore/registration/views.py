@@ -1,6 +1,7 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import Group
 from .forms import SignUpForm
 
 def signup(request):
@@ -13,6 +14,8 @@ def signup(request):
             user_type = form.cleaned_data.get('user_type')
             user = authenticate(username=username, password=raw_password, user_type=user_type)
             login(request, user)
+            group = Group.objects.get(name=user_type)
+            user.groups.add(group)
             return redirect('/store/')
     else:
         form = SignUpForm()
