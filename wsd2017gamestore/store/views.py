@@ -14,10 +14,14 @@ def index(request):
 		form = GameForm(request.POST)
 		if form.is_valid():
 			#Take form data
+			# ***********************************************************************
+			# IMPORTANT: IF YOU ADD STUFF TO THE FORM, REMEMBER TO ADD THEM HERE!!!!!
 			name = form.cleaned_data['game_name']
 			price = form.cleaned_data['game_price']
+			url = form.cleaned_data['game_url']
+			#*************************************************************************
 			#TODO: Sanitize the data
-			g = Game(name=name, price=price)
+			g = Game(name=name, price=price, url=url) # And also here
 			g.save()
 			form = GameForm() #empties the form
 	else:
@@ -25,6 +29,7 @@ def index(request):
 
 	context = {
 		'games' : games,
-		'form' : form
+		'form' : form,
+		'id' : id
 	}
 	return render(request, 'store/index.html', context)
