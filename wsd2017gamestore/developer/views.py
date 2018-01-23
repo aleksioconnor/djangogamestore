@@ -18,3 +18,9 @@ def index(request):
         form = NewGameForm()
 
     return render(request, 'developer/index.html', {'form':form})
+
+def edit(request):
+    games = Game.objects.order_by('price')
+    context = { 'games': games }
+
+    return render(request, 'developer/edit.html', context)
