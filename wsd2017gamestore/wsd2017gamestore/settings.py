@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'registration.apps.RegistrationConfig',
     'authentication.apps.AuthenticationConfig',
-    'gameview.apps.GameviewConfig'
+    'gameview.apps.GameviewConfig',
+    'developer.apps.DeveloperConfig',
 ]
 
 MIDDLEWARE = [
