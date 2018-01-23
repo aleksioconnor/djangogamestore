@@ -9,3 +9,9 @@ def index(request, game_id):
 	current_game = Game.objects.get(id=game_id)
 	context = {'game': current_game}
 	return render(request, 'gameview/index.html', context)
+
+def score(request, game_id):
+	post = request.POST
+	score = post['score']
+	print(result)
+	return HttpResponse("jee")
