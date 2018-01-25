@@ -3,7 +3,11 @@
 <div id="message"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <div>{{game.name}}</div>
+<div id="scores"></div>
 <script type="text/javascript">
+
+	
+	// TODO: ALL THIS TO ITS INDEPENDENT JAVASCRIPT FILE
   var url = "{{ game.url }}"
   var iframeSource = url
    // Create the iframe
@@ -77,9 +81,24 @@
       },
       url: "score/",
       success: function(result) {
-        console.log(result);
+        parseJson(result);
       }
     })
+  }
+
+  // Functions parses json data received from django
+  // and adds it to html
+  // data is returned as string from django
+  // TODO: This function should receive this data from the view BEFORE player submits data.
+  // This is now just an example how it could work.
+  function parseJson(data) {
+    var scoreDiv = $('#scores');
+    var json = JSON.parse(data);
+    scoreDiv.empty(); 
+
+    $.each(json, function(index, value){
+      scoreDiv.append((index + 1) + ". Player: " + value.fields.player + ", Score: " + value.fields.score + "<br>");
+    });
   }
 
 </script>
