@@ -4,15 +4,19 @@ from django.template import loader
 
 from store.models import Game
 from .models import HighScore
+from .models import GameState
 
 from django.http import JsonResponse
 from django.core import serializers
+
+from django.db.utils import OperationalError
 
 import json
 
 def index(request, game_id):
 	current_game = Game.objects.get(id=game_id)
-	context = {'game': current_game}
+	high_score_list = HighScore.objects.all().filter(game=current_game).order_by('-score')[:5]
+	context = {'game': current_game, 'high_scores': high_score_list}
 	return render(request, 'gameview/index.html', context)
 
 # Defines an 'endpoint' for our ajax POST function in the gameview template.
@@ -42,3 +46,21 @@ def score(request, game_id):
 
 	# Safe is false to allow non-dict objects to be serialized
 	return JsonResponse(serializers.serialize('json', scores), safe=False)
+
+def state(request, game_id):
+	post = request.POST
+	state = post['state']
+	currentGame = Game.objects.get(id=game_id)
+	newState = GameState(player=request.user, state=state, game=currentGame)
+	newState.save()
+	return HttpResponse("game saved")
+
+def load(request, game_id):
+	currentGame = Game.objects.get(id=game_id)
+	try:
+		mostRecentSave = GameState.objects.all().filter(game=currentGame).filter(player=request.user).order_by('-date')[:1]
+	# In case of no game saves
+	except OperationalError:
+		return (HttpResponse("error"))
+	return JsonResponse(serializers.serialize('json', mostRecentSave, fields=('state')), safe=False)
+

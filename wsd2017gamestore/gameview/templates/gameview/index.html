@@ -1,20 +1,20 @@
-<h2>{{game.name}}</h2>
+<h2>Game name: {{game.name}}</h2>
 <div id="frame_div"></div>
 <div id="message"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<div>{{game.name}}</div>
-<div id="scores"></div>
-<script type="text/javascript">
+<div id="scores">
+	High score list: <br>
+	{% for score in high_scores %}
+		{{ score.player }} got a score of {{ score }} <br>
+	{% endfor %}
+</div>
+<iframe src="{{ game.url }}" id="gameframe"></iframe>
 
+<script type="text/javascript">
 	
 	// TODO: ALL THIS TO ITS INDEPENDENT JAVASCRIPT FILE
-  var url = "{{ game.url }}"
-  var iframeSource = url
-   // Create the iframe
-   var iframe = document.createElement('iframe');
-   iframe.setAttribute('src', iframeSource);
-   document.body.appendChild(iframe);
 
+  // refactor
   function bindEvent(element, eventName, eventHandler) {
      if (element.addEventListener){
          element.addEventListener(eventName, eventHandler, false);
@@ -24,37 +24,29 @@
   };
 
   var message = document.getElementById('message');
-  var height;
-  var width;
-
   bindEvent(window, 'message', function (e) {
       switch(e.data.messageType) {
         case "SCORE":
           saveHighScore(e.data.score)
-          message.innerHTML = e.data.score;
           break;
         case "SAVE":
-          message.innerHTML = e.data.messageType;
+          saveGameState(e.data.gameState); 
           break;
         case "LOAD_REQUEST":
-          message.innerHTML = e.data.messageType;
-          break;
-        case "LOAD":
-          message.innerHTML = e.data.messageType;
+          requestLoad();
           break;
         case "ERROR":
-          message.innerHTML = e.data.info;
           break;
         case "SETTING":
           // change the size of the iframe according to given options
-          iframe.style.height = e.data.options.height + 'px';
-          iframe.style.width = e.data.options.width + 'px';
+          $('#gameframe').css('height', e.data.options.height + 'px');
+          $('#gameframe').css('width', e.data.options.width + 'px');
             break;
         default:
-          message.innerHTML = "";
       }
   });
 
+  // helper function, specify later
   function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -72,6 +64,23 @@
   }
   var csrftoken = getCookie('csrftoken');
 
+  // TODO: Only one function for sending data!
+  function saveGameState(state) {
+    var data = JSON.stringify(state);
+    console.log(data);
+    $.ajax({
+      type: "POST",
+      data: {
+        'state': data,
+        'csrfmiddlewaretoken': csrftoken,
+      },
+      url: "state/",
+      success: function(result) {
+        console.log(result);
+      }
+    });
+  }
+
   function saveHighScore(score) {
     $.ajax({
       type: "POST",
@@ -85,20 +94,43 @@
       }
     })
   }
+  
+  function requestLoad(data) {
+    $.ajax({
+      type: "GET",
+      url: "load/",
+      success: function(result) {
+        console.log(result);
+        console.log("load succesful");
+        var json = parseJson(result);
+        // Hacky fix to return the message to json format
+        var gameState = parseJson(json[0].fields.state)
+        var iframe = $('#gameframe')[0]
+        var message = {};
+        message.messageType = "LOAD";
+        message.gameState = gameState;
+        console.log(iframe)
+        iframe.contentWindow.postMessage(message, "*")
+        
+      }
+    })
+  }
 
-  // Functions parses json data received from django
-  // and adds it to html
-  // data is returned as string from django
-  // TODO: This function should receive this data from the view BEFORE player submits data.
-  // This is now just an example how it could work.
+//  function sendMessage(message){
+//      var iframe = document.getElementById('gameIframe');
+//      if(iframe){
+//          iframe.contentWindow.postMessage(message, "*");
+//      }else{
+//          $('#modalMessage').text("Ops, game not found!");
+//          $("#modalInfo").removeClass('info done');
+//          $("#modalInfo").addClass('error');
+//          $("#modalInfo").modal();
+//      }
+//  }
+
   function parseJson(data) {
-    var scoreDiv = $('#scores');
     var json = JSON.parse(data);
-    scoreDiv.empty(); 
-
-    $.each(json, function(index, value){
-      scoreDiv.append((index + 1) + ". Player: " + value.fields.player + ", Score: " + value.fields.score + "<br>");
-    });
+    return json;
   }
 
 </script>
