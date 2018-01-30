@@ -1,5 +1,7 @@
+{% if user.is_authenticated %}
 <h2>Pelisi</h2>
 {% for game in games %}
   <li> Pelin nimi: <a href='/game/{{game.id}}' >{{ game.name }}</a>, <br>hinta: {{ game.price }}<br>id: {{ game.id }} <br>url: {{ game.url }}</li>
   <br>
 {% endfor %}
+{% endif %}

@@ -20,7 +20,8 @@ def index(request):
 			url = form.cleaned_data['game_url']
 			#*************************************************************************
 			#TODO: Sanitize the data
-			g = Game(name=name, price=price, url=url) # And also here
+			dev_id = request.user.id #collects id of the current user
+			g = Game(name=name, price=price, url=url, developer_id = dev_id) # And also here
 			g.save()
 			form = GameForm() #empties the form
 	else:
