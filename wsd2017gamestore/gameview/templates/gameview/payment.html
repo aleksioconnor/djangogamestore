@@ -1,0 +1,19 @@
+<div id="form">
+	<h3>Buy game</h3>
+	<form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
+	    <input type="hidden" name="pid" value={{pid}} />
+	    <input type="hidden" name="sid" value={{sid}} />
+	    <input type="hidden" name="success_url"
+	            value="http://localhost:8000/game/{{game_id}}/" />
+	    <input type="hidden" name="cancel_url"
+	            value="http://localhost:8000/game/{{game_id}}/" />
+	    <input type="hidden" name="error_url"
+	            value="http://localhost:8000/game/{{game_id}}/" />
+	    <input type="hidden" name="checksum"
+	            value={{checksum}} />
+
+	    <label for="id_amount">Amount</label>
+	    <input type="text" id="id_amount" name="amount" value={{amount}} />
+	    <input type="submit" value="Accept Payment"/>
+	</form>
+</div>

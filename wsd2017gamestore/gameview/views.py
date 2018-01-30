@@ -8,6 +8,8 @@ from .models import HighScore
 from django.http import JsonResponse
 from django.core import serializers
 
+from hashlib import md5
+
 import json
 
 def index(request, game_id):
@@ -42,3 +44,25 @@ def score(request, game_id):
 
 	# Safe is false to allow non-dict objects to be serialized
 	return JsonResponse(serializers.serialize('json', scores), safe=False)
+
+def buy(request, game_id):
+	game = Game.objects.get(id=game_id)
+
+	pid = "12345" # TODO Change to a unique id (f.ex. gameid + userid)
+	sid = "AKAGameStore"
+	amount = game.price
+	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
+	checksum_str = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+	m = md5(checksum_str.encode("ascii")) # encoding the checksum
+	checksum = m.hexdigest()
+
+	context = {
+		'pid': pid,
+		'sid': sid,
+		'amount': amount,
+		'secret_key': secret_key,
+		'checksum': checksum,
+		'game_id': game_id
+	}
+
+	return render(request, 'gameview/payment.html', context)
