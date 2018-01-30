@@ -7,4 +7,5 @@ urlpatterns = [
 	url(r'^(?P<game_id>[0-9]+)/score/', views.score),
 	url(r'^(?P<game_id>[0-9]+)/state/', views.state),
 	url(r'^(?P<game_id>[0-9]+)/load/', views.load),
+	url(r'^(?P<game_id>[0-9]+)/payment/', views.buy),
 ]

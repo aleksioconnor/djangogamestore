@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from django.core import serializers
 
 from django.db.utils import OperationalError
+from hashlib import md5
 
 import json
 
@@ -64,3 +65,24 @@ def load(request, game_id):
 		return (HttpResponse("error"))
 	return JsonResponse(serializers.serialize('json', mostRecentSave, fields=('state')), safe=False)
 
+def buy(request, game_id):
+	game = Game.objects.get(id=game_id)
+
+	pid = "12345" # TODO Change to a unique id (f.ex. gameid + userid)
+	sid = "AKAGameStore"
+	amount = game.price
+	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
+	checksum_str = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+	m = md5(checksum_str.encode("ascii")) # encoding the checksum
+	checksum = m.hexdigest()
+
+	context = {
+		'pid': pid,
+		'sid': sid,
+		'amount': amount,
+		'secret_key': secret_key,
+		'checksum': checksum,
+		'game_id': game_id
+	}
+
+	return render(request, 'gameview/payment.html', context)
