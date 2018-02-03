@@ -65,10 +65,10 @@ def load(request, game_id):
 		return (HttpResponse("error"))
 	return JsonResponse(serializers.serialize('json', mostRecentSave, fields=('state')), safe=False)
 
-def buy(request, game_id):
+def buy_game(request, game_id):
 	game = Game.objects.get(id=game_id)
-
-	pid = "12345" # TODO Change to a unique id (f.ex. gameid + userid)
+	user_id = request.user.id # TODO case none
+	pid = str(user_id) + "-" + game_id
 	sid = "AKAGameStore"
 	amount = game.price
 	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
@@ -82,7 +82,35 @@ def buy(request, game_id):
 		'amount': amount,
 		'secret_key': secret_key,
 		'checksum': checksum,
-		'game_id': game_id
+		'game_id': game_id,
+		'game': game
 	}
 
 	return render(request, 'gameview/payment.html', context)
+
+def successful_payment(request, game_id):
+	pid = request.GET['pid'] # payment ID
+	ref = request.GET['ref'] # reference to payment
+	url_checksum = request.GET['checksum']
+
+	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
+	checksum_str = "pid={}&ref={}&result={}&token={}".format(pid, ref, "success", secret_key)
+
+	m = md5(checksum_str.encode("ascii"))
+	checksum = m.hexdigest()
+
+	# user_id, game_id = pid.split('-')
+	game = Game.objects.get(id=game_id)
+
+	if url_checksum == checksum:
+		# TODO check from owned games that it is not already purchased
+		# TODO add to owned games
+		# TODO add to game purchase history
+
+		context = {
+			'game': game,
+		}
+
+		return render(request, 'gameview/success.html', context)
+	else:
+		return render(request, 'gameview/success.html', {'error': "error"})
