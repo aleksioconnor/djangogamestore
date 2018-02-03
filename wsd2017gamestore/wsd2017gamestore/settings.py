@@ -66,6 +66,9 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+# Using console.EmailBackend for now, if time allows TODO: change to a real email 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 ROOT_URLCONF = 'wsd2017gamestore.urls'
 
 TEMPLATES = [
