@@ -1,142 +1,21 @@
-{% include "base.html" %}
+<script>
+  var csrf = "{% csrf_token %}"
+</script>
 
+{% include "base.html" %}
 
 <h2>Game name: {{game.name}}</h2>
 <div id="frame_div"></div>
 <div id="message"></div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 <div id="scores">
 	High score list: <br>
 	{% for score in high_scores %}
 		{{ score.player }} got a score of {{ score }} <br>
 	{% endfor %}
 </div>
+
 <iframe src="{{ game.url }}" id="gameframe"></iframe>
-
-<script type="text/javascript">
-	
-
-	// TODO: ALL THIS TO ITS INDEPENDENT JAVASCRIPT FILE
-
-  // refactor
-  function bindEvent(element, eventName, eventHandler) {
-     if (element.addEventListener){
-         element.addEventListener(eventName, eventHandler, false);
-     } else if (element.attachEvent) {
-         element.attachEvent('on' + eventName, eventHandler);
-     }
-  };
-
-  var message = document.getElementById('message');
-  bindEvent(window, 'message', function (e) {
-      switch(e.data.messageType) {
-        case "SCORE":
-          saveHighScore(e.data.score)
-          break;
-        case "SAVE":
-          saveGameState(e.data.gameState); 
-          break;
-        case "LOAD_REQUEST":
-          requestLoad();
-          break;
-        case "ERROR":
-          break;
-        case "SETTING":
-          // change the size of the iframe according to given options
-          $('#gameframe').css('height', e.data.options.height + 'px');
-          $('#gameframe').css('width', e.data.options.width + 'px');
-            break;
-        default:
-      }
-  });
-
-  // helper function, specify later
-  function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-  }
-  var csrftoken = getCookie('csrftoken');
-
-  // TODO: Only one function for sending data!
-  function saveGameState(state) {
-    var data = JSON.stringify(state);
-    console.log(data);
-    $.ajax({
-      type: "POST",
-      data: {
-        'state': data,
-        'csrfmiddlewaretoken': csrftoken,
-      },
-      url: "state/",
-      success: function(result) {
-        console.log(result);
-      }
-    });
-  }
-
-  function saveHighScore(score) {
-    $.ajax({
-      type: "POST",
-      data: {
-        'score': score,
-        'csrfmiddlewaretoken': csrftoken,
-      },
-      url: "score/",
-      success: function(result) {
-        parseJson(result);
-      }
-    })
-  }
-  
-  function requestLoad(data) {
-    $.ajax({
-      type: "GET",
-      url: "load/",
-      success: function(result) {
-        console.log(result);
-        console.log("load succesful");
-        var json = parseJson(result);
-        // Hacky fix to return the message to json format
-        var gameState = parseJson(json[0].fields.state)
-        var iframe = $('#gameframe')[0]
-        var message = {};
-        message.messageType = "LOAD";
-        message.gameState = gameState;
-        console.log(iframe)
-        iframe.contentWindow.postMessage(message, "*")
-        
-      }
-    })
-  }
-
-//  function sendMessage(message){
-//      var iframe = document.getElementById('gameIframe');
-//      if(iframe){
-//          iframe.contentWindow.postMessage(message, "*");
-//      }else{
-//          $('#modalMessage').text("Ops, game not found!");
-//          $("#modalInfo").removeClass('info done');
-//          $("#modalInfo").addClass('error');
-//          $("#modalInfo").modal();
-//      }
-//  }
-
-  function parseJson(data) {
-    var json = JSON.parse(data);
-    return json;
-  }
-
-</script>
 <br>
+
 <a type="button" href="payment/">Buy this game</a>
