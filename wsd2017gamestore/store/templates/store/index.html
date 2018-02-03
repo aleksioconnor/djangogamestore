@@ -1,3 +1,6 @@
+{% include "base.html" %}
+
+
 <form action="/store/" method="post"> <!-- POST-request the form to /store/ -->
     {% csrf_token %}
     {{ form }}
