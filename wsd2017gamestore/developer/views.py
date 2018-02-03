@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
+from django.views.generic.edit import UpdateView
 from .forms import NewGameForm
 from store.models import Game
 
@@ -27,3 +29,8 @@ def edit(request):
     context = { 'games': games }
 
     return render(request, 'developer/edit.html', context)
+
+# Takes the template from store/game_form.html TODO: change this
+class GameEdit(UpdateView):
+        model = Game
+        fields = ['name', 'price', 'url']
