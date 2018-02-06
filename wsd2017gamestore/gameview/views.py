@@ -113,4 +113,58 @@ def successful_payment(request, game_id):
 
 		return render(request, 'gameview/success.html', context)
 	else:
-		return render(request, 'gameview/success.html', {'error': "error"})
+		return render(request, 'gameview/success.html', {'error': "error"}) # TODO
+
+def error_payment(request, game_id):
+	pid = request.GET['pid'] # payment ID
+	ref = request.GET['ref'] # reference to payment
+	url_checksum = request.GET['checksum']
+
+	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
+	checksum_str = "pid={}&ref={}&result={}&token={}".format(pid, ref, "error", secret_key)
+
+	m = md5(checksum_str.encode("ascii"))
+	checksum = m.hexdigest()
+
+	# user_id, game_id = pid.split('-')
+	game = Game.objects.get(id=game_id)
+
+	if url_checksum == checksum:
+		# TODO check from owned games that it is not already purchased
+		# TODO add to owned games
+		# TODO add to game purchase history
+
+		context = {
+			'game': game,
+		}
+
+		return render(request, 'gameview/error.html', context)
+	else:
+		return render(request, 'gameview/success.html', {'error': "error"}) # TODO
+
+def cancel_payment(request, game_id):
+	pid = request.GET['pid'] # payment ID
+	ref = request.GET['ref'] # reference to payment
+	url_checksum = request.GET['checksum']
+
+	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
+	checksum_str = "pid={}&ref={}&result={}&token={}".format(pid, ref, "cancel", secret_key)
+
+	m = md5(checksum_str.encode("ascii"))
+	checksum = m.hexdigest()
+
+	# user_id, game_id = pid.split('-')
+	game = Game.objects.get(id=game_id)
+
+	if url_checksum == checksum:
+		# TODO check from owned games that it is not already purchased
+		# TODO add to owned games
+		# TODO add to game purchase history
+
+		context = {
+			'game': game,
+		}
+
+		return render(request, 'gameview/cancel.html', context)
+	else:
+		return render(request, 'gameview/success.html', {'error': "error"}) # TODO
