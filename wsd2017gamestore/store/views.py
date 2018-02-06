@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from django.template import loader
-from .models import Game
+from .models import Game, BoughtGames
+from django.contrib.auth.models import User
 
 from .forms import GameForm
 
 def index(request):
 	most_recent_game = Game.objects.order_by('price')
 	games = most_recent_game
+	owned_games = BoughtGames.objects.filter(user=request.user)
+	for i in owned_games:
+		print(i.game.name)
 
 	# handling form actions
 	if request.method == 'POST':
@@ -30,6 +34,7 @@ def index(request):
 	context = {
 		'games' : games,
 		'form' : form,
-		'id' : id
+		'id' : id,
+		'owned_games' : owned_games,
 	}
 	return render(request, 'store/index.html', context)

@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 
-from store.models import Game
+from store.models import Game, BoughtGames
+from django.contrib.auth.models import User
 from .models import HighScore
 from .models import GameState
 
@@ -67,8 +68,8 @@ def load(request, game_id):
 
 def buy_game(request, game_id):
 	game = Game.objects.get(id=game_id)
-	user_id = request.user.id # TODO case none
-	pid = str(user_id) + "-" + game_id
+	user_id = request.user.id # TODO case none = nobody logged in
+	pid = str(user_id) + "-" + game_id # Can be any random id, just needs to be unique
 	sid = "AKAGameStore"
 	amount = game.price
 	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
@@ -101,19 +102,29 @@ def successful_payment(request, game_id):
 
 	# user_id, game_id = pid.split('-')
 	game = Game.objects.get(id=game_id)
+	current_user = request.user
 
-	if url_checksum == checksum:
-		# TODO check from owned games that it is not already purchased
-		# TODO add to owned games
-		# TODO add to game purchase history
+	if current_user:
+		if url_checksum == checksum:
+			# TODO check from owned games that it is not already purchased
+			# TODO add to owned games
+			# TODO add to game purchase history
 
-		context = {
-			'game': game,
-		}
+			user = User.objects.get(id=current_user.id) # Is this equal to current_user?
+			print(user)
 
-		return render(request, 'gameview/success.html', context)
-	else:
-		return render(request, 'gameview/success.html', {'error': "error"}) # TODO
+			print(current_user)
+
+			bought_game = BoughtGames(game = game, user = user)
+			bought_game.save()
+
+			context = {
+				'game': game,
+			}
+
+			return render(request, 'gameview/success.html', context)
+		else:
+			return render(request, 'gameview/success.html', {'error': "error"}) # TODO
 
 def error_payment(request, game_id):
 	pid = request.GET['pid'] # payment ID
@@ -128,18 +139,21 @@ def error_payment(request, game_id):
 
 	# user_id, game_id = pid.split('-')
 	game = Game.objects.get(id=game_id)
+	user = request.user
+	if user:
+		if url_checksum == checksum:
+			# TODO check from owned games that it is not already purchased
+			# TODO add to owned games
+			# TODO add to game purchase history
 
-	if url_checksum == checksum:
-		# TODO check from owned games that it is not already purchased
-		# TODO add to owned games
-		# TODO add to game purchase history
+			context = {
+				'game': game,
+			}
 
-		context = {
-			'game': game,
-		}
-
-		return render(request, 'gameview/error.html', context)
-	else:
+			return render(request, 'gameview/error.html', context)
+		else: # wrong checksum
+			return render(request, 'gameview/success.html', {'error': "error"}) # TODO
+	else: # user not logged in
 		return render(request, 'gameview/success.html', {'error': "error"}) # TODO
 
 def cancel_payment(request, game_id):
