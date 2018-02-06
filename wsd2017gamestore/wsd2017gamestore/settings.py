@@ -143,3 +143,7 @@ DATABASES['default'].update(db_from_env)
 
 # Login redirect
 LOGIN_REDIRECT_URL = '/store/'
+
+# The URL where requests are redirected for login, especially when using the login_required() decorator.
+
+LOGIN_URL = '/auth/login/'

@@ -24,10 +24,6 @@ def index(request, game_id):
 # When submitting a score, a function sends the score with an ajax function
 # and it gets handled here.
 
-#TODO & IMPORTANT: Not sure, but i'm pretty confident that the score input can be manipulated. For example,
-# if the score key-value is intercepted a mysql-injection can be performed. This is something that should
-# be investigated
-
 def score(request, game_id):
 	# Request contains the crsftoken and the data sent from the template
 	# can be accessed via POST
