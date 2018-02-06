@@ -1,0 +1,18 @@
+<h2>Canceled payment</h2>
+
+<p>You canceled the payment for the game {{game.name}}!</p>
+
+<Button onClick="goToGame({{game.id}})">Return to the game</Button>
+<Button onClick="goToStore()">Return to the store</Button>
+
+<script>
+  function goToGame(game_id){
+    // Takes the user to the editing page
+    window.location = '/game/' + game_id + '/'
+  }
+
+  function goToStore(){
+    // Takes the user to the editing page
+    window.location = '/store/'
+  }
+</script>
