@@ -1,23 +1,23 @@
 {% include "base.html" %}
 
-
 <form action="/store/" method="post"> <!-- POST-request the form to /store/ -->
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit" />
 </form>
-<h3>Own games</h3>
-<ul>
-  {% for owned_game in owned_games %}
-    <li><a href='/game/{{owned_game.game.id}}'>{{ owned_game.game.name }}</a></li>
-  {% endfor %}
-</ul>
+{% if user.is_authenticated %}
+  <h3>Your games</h3>
+  <ul>
+    {% for owned_game in owned_games %}
+      <li><a href='/game/{{owned_game.game.id}}'>{{ owned_game.game.name }}</a></li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 <h3>All games</h3>
 <ul>
   {% for game in games %}
     <li><a href='/game/{{game.id}}' >Pelin nimi: {{ game.name }}, hinta: {{ game.price }}</a> id: {{ game.id }} url: {{ game.url }}</li>
   {% endfor %}
 </ul>
-{% if user.is_authenticated %}
-	<div>User is logged in</div>
-{% endif %}
+

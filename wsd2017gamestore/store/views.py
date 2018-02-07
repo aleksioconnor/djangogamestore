@@ -6,11 +6,18 @@ from django.contrib.auth.models import User
 from .forms import GameForm
 
 def index(request):
+	# should this be ordered by date?
 	most_recent_game = Game.objects.order_by('price')
 	games = most_recent_game
-	owned_games = BoughtGames.objects.filter(user=request.user)
-	for i in owned_games:
-		print(i.game.name)
+
+	if request.user.is_authenticated():
+		owned_games = BoughtGames.objects.filter(user=request.user)
+		print(owned_games)
+	else:
+		owned_games = BoughtGames.objects.none()
+
+#	for i in owned_games:
+#		print(i.game.name)
 
 	# handling form actions
 	if request.method == 'POST':
