@@ -18,4 +18,6 @@
 <iframe src="{{ game.url }}" id="gameframe"></iframe>
 <br>
 
-<a type="button" href="payment/">Buy this game</a>
+{% if not owned %}
+	<a type="button" href="payment/">Buy this game</a>
+{% endif %}

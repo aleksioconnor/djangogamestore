@@ -16,9 +16,16 @@ from hashlib import md5
 import json
 
 def index(request, game_id):
+	# Checks what game is being currently viewed from the id
 	current_game = Game.objects.get(id=game_id)
+
+	# Retrieves global top five scores associated with this game
 	high_score_list = HighScore.objects.all().filter(game=current_game).order_by('-score')[:5]
-	context = {'game': current_game, 'high_scores': high_score_list}
+
+	# Checks if user owns this game, True if does, False if not
+	user_owns_game = len(BoughtGames.objects.all().filter(game=current_game).filter(user=request.user)) > 0
+
+	context = {'game': current_game, 'high_scores': high_score_list, 'owned': user_owns_game}
 	return render(request, 'gameview/index.html', context)
 
 # Defines an 'endpoint' for our ajax POST function in the gameview template.
