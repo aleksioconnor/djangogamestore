@@ -1,28 +1,35 @@
+{% extends "base.html" %}
+
+
+
+{% block javascript %}
 <script>
   var csrf = "{% csrf_token %}"
 </script>
+<script src='/static/gameview/main.js'></script>
+{% endblock %}
 
-{% include "base.html" %}
+{% block content %}
+  <h2>Game name: {{game.name}}</h2>
+  <div id="frame_div"></div>
+  <div id="message"></div>
 
-<h2>Game name: {{game.name}}</h2>
-<div id="frame_div"></div>
-<div id="message"></div>
+  {% if owned %}
+      <iframe src="{{ game.url }}" id="gameframe" frameborder="0"></iframe>
+  {% else %}
+  <br>
+      <div class='info-modal'>
+          Please 	<a type="button" href="payment/">buy this game</a> to play it.
+      </div>
+  {% endif %}
 
-<div id="scores">
-	High score list: <br>
-	{% for score in high_scores %}
-		{{ score.player }} got a score of {{ score }} <br>
-	{% endfor %}
-</div>
+  <div id="scores">
+      Global high score list: <br>
+      {% for score in high_scores %}
+          {{ score.player }} got a score of {{ score }} <br>
+      {% endfor %}
+  </div>
 
-{% if owned %}
-	<iframe src="{{ game.url }}" id="gameframe"></iframe>
-{% else %}
-<br>
-	<div class='info-modal'>
-		Please 	<a type="button" href="payment/">buy this game</a> to play it.
-	</div>
-{% endif %}
-
-<br>
+  <br>
+{% endblock %}
 

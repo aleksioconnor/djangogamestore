@@ -74,7 +74,11 @@ def load(request, game_id):
 	# In case of no game saves
 	except OperationalError:
 		return (HttpResponse("error"))
-	return JsonResponse(serializers.serialize('json', mostRecentSave, fields=('state')), safe=False)
+	# Check if most recent save is empty or not
+	if not mostRecentSave:
+		return (HttpResponse('Errors', status=400))
+	else:
+		return JsonResponse(serializers.serialize('json', mostRecentSave, fields=('state')), safe=False)
 
 @login_required
 def buy_game(request, game_id):

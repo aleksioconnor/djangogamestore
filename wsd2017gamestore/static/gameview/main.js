@@ -30,6 +30,7 @@ window.addEventListener('message', function (message) {
       var gameframe = $('#gameframe')
       gameframe.css('height', message.data.options.height + 'px');
       gameframe.css('width', message.data.options.width + 'px');
+      gameframe.css('background-color', 'white');
       break;
   }
 });
@@ -89,17 +90,27 @@ window.addEventListener('message', function (message) {
       type: "GET",
       url: "load/",
       success: function (result) {
-        var json = parseJson(result);
+          var json = parseJson(result);
 
-        // Hacky fix to return the message to json format
-        var gameState = parseJson(json[0].fields.state)
+          // Hacky fix to return the message to json format
+          var gameState = parseJson(json[0].fields.state)
+          var iframe = $('#gameframe')[0]
+          var message = {};
+
+          message.messageType = "LOAD";
+          message.gameState = gameState;
+
+          iframe.contentWindow.postMessage(message, "*");
+        },
+      error: function(result) {
+        // Messages should be handled in views i guess?
         var iframe = $('#gameframe')[0]
+
         var message = {};
-
-        message.messageType = "LOAD";
-        message.gameState = gameState;
-
-        iframe.contentWindow.postMessage(message, "*")
+        message.messageType = "ERROR";
+        message.info = "No saved games found";
+        iframe.contentWindow.postMessage(message, "*");
+        
       }
     })
   }

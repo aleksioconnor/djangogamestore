@@ -1,23 +1,38 @@
-{% include "base.html" %}
-
-<form action="/store/" method="post"> <!-- POST-request the form to /store/ -->
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" />
-</form>
-{% if user.is_authenticated %}
+{% extends "base.html" %} {% block content %}
+<!--
+  <form action="/store/" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="Submit" />
+  </form>
+-->
+<div class='root'>
+  <div class='green'></div>
+  {% if user.is_authenticated %}
   <h3>Your games</h3>
-  <ul>
+  <div class='games-list row'>
     {% for owned_game in owned_games %}
-      <li><a href='/game/{{owned_game.game.id}}'>{{ owned_game.game.name }}</a></li>
+    <div class='game-container'>
+                  <div class='game-price'>{{ owned_game.game.price}} €</div>
+
+      <a href='/game/{{owned_game.game.id}}'>{{ owned_game.game.name }}
+        <div class='game-image'></div>
+      </a>
+    </div>
     {% endfor %}
-  </ul>
-{% endif %}
+  </div>
+  {% endif %}
 
-<h3>All games</h3>
-<ul>
-  {% for game in games %}
-    <li><a href='/game/{{game.id}}' >Pelin nimi: {{ game.name }}, hinta: {{ game.price }}</a> id: {{ game.id }} url: {{ game.url }}</li>
-  {% endfor %}
-</ul>
-
+  <h3>All games</h3>
+  <div class='games-list row'>
+      {% for game in games %}
+          <div class='game-container'>
+            <div class='game-price'>{{ game.price }} €</div>
+        <a href='/game/{{game.id}}'>{{ game.name }}
+          <div class='game-image'></div>
+        </a>
+      </div>
+    {% endfor %}
+        </div>
+</div>
+{% endblock %}
