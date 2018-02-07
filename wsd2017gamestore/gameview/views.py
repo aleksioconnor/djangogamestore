@@ -27,7 +27,10 @@ def index(request, game_id):
 	high_score_list = HighScore.objects.all().filter(game=current_game).order_by('-score')[:5]
 
 	# Checks if user owns this game, True if does, False if not
-	user_owns_game = len(BoughtGames.objects.all().filter(game=current_game).filter(user=request.user)) > 0
+	if request.user.is_authenticated():
+		user_owns_game = len(BoughtGames.objects.all().filter(game=current_game).filter(user=request.user)) > 0
+	else:
+		user_owns_game = False
 
 	context = {'game': current_game, 'high_scores': high_score_list, 'owned': user_owns_game}
 	return render(request, 'gameview/index.html', context)
