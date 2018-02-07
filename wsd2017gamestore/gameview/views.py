@@ -7,6 +7,10 @@ from django.contrib.auth.models import User
 from .models import HighScore
 from .models import GameState
 
+from django.contrib.auth.decorators import login_required
+
+from django.shortcuts import redirect
+
 from django.http import JsonResponse
 from django.core import serializers
 
@@ -69,28 +73,38 @@ def load(request, game_id):
 		return (HttpResponse("error"))
 	return JsonResponse(serializers.serialize('json', mostRecentSave, fields=('state')), safe=False)
 
+@login_required
 def buy_game(request, game_id):
 	game = Game.objects.get(id=game_id)
-	user_id = request.user.id # TODO case none = nobody logged in
-	pid = str(user_id) + "-" + game_id # Can be any random id, just needs to be unique
-	sid = "AKAGameStore"
-	amount = game.price
-	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
-	checksum_str = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
-	m = md5(checksum_str.encode("ascii")) # encoding the checksum
-	checksum = m.hexdigest()
+	user_id = request.user.id
 
-	context = {
-		'pid': pid,
-		'sid': sid,
-		'amount': amount,
-		'secret_key': secret_key,
-		'checksum': checksum,
-		'game_id': game_id,
-		'game': game
-	}
+	# Check if user owns game.
+	user_owns_game = len(BoughtGames.objects.all().filter(game=game).filter(user=request.user)) > 0
 
-	return render(request, 'gameview/payment.html', context)
+
+	if not user_owns_game:
+		pid = str(user_id) + "-" + game_id # Can be any random id, just needs to be unique
+		sid = "AKAGameStore"
+		amount = game.price
+		secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
+		checksum_str = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+		m = md5(checksum_str.encode("ascii")) # encoding the checksum
+		checksum = m.hexdigest()
+
+		context = {
+			'pid': pid,
+			'sid': sid,
+			'amount': amount,
+			'secret_key': secret_key,
+			'checksum': checksum,
+			'game_id': game_id,
+			'game': game
+		}
+
+		return render(request, 'gameview/payment.html', context)
+	# If user owns game, redirect to home page.
+	else:
+		return redirect('/store/')
 
 def successful_payment(request, game_id):
 	pid = request.GET['pid'] # payment ID
