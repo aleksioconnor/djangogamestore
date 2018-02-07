@@ -15,9 +15,14 @@
 	{% endfor %}
 </div>
 
-<iframe src="{{ game.url }}" id="gameframe"></iframe>
+{% if owned %}
+	<iframe src="{{ game.url }}" id="gameframe"></iframe>
+{% else %}
+<br>
+	<div class='info-modal'>
+		Please 	<a type="button" href="payment/">buy this game</a> to play it.
+	</div>
+{% endif %}
+
 <br>
 
-{% if not owned %}
-	<a type="button" href="payment/">Buy this game</a>
-{% endif %}
