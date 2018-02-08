@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.generic.edit import UpdateView
 from .forms import NewGameForm
-from store.models import Game
+from store.models import Game, BoughtGames
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import Group
@@ -32,6 +32,10 @@ def index(request):
 @login_required
 def edit(request):
     games = Game.objects.filter(developer_id = request.user.id)
+    # Get stats of selled games
+    for game in games:
+      single_game_stats = BoughtGames.objects.all().filter(game = game)
+      game.sales = len(single_game_stats)
     context = { 'games': games }
 
     return render(request, 'developer/edit.html', context)

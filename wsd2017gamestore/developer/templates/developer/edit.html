@@ -20,6 +20,7 @@
   <th style="text-align:left">Hinta</th>
   <th style="text-align:left">Pelin ID</th>
   <th style="text-align:left">URL</th>
+  <th style="text-align:left">Sales</th>
 </tr>
 {% for game in games %}
 <tr>
@@ -27,6 +28,7 @@
   <td> {{ game.price }}</td>
   <td> {{ game.id }}</td>
   <td> {{ game.url }}</td>
+  <td> -   {{ game.sales }}</td>
   <!-- Edit-napin painallus vie erilliseen muokkausnäkymään -->
   <td> <button onclick="editGame({{ game.id }})" id="{{ game.id }}"> edit </button> </td>
 </tr>
