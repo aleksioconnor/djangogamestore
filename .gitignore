@@ -9,7 +9,7 @@ docs/_build/
 docs/locale/
 node_modules/
 staticfiles/
-static/
+**/static/admin/
 tests/coverage_html/
 tests/.coverage
 build/

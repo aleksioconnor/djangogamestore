@@ -2,9 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 
-from store.models import Game
+from store.models import Game, BoughtGames
+from django.contrib.auth.models import User
 from .models import HighScore
 from .models import GameState
+
+from django.contrib.auth.decorators import login_required
+
+from django.shortcuts import redirect
 
 from django.http import JsonResponse
 from django.core import serializers
@@ -15,18 +20,24 @@ from hashlib import md5
 import json
 
 def index(request, game_id):
+	# Checks what game is being currently viewed from the id
 	current_game = Game.objects.get(id=game_id)
+
+	# Retrieves global top five scores associated with this game
 	high_score_list = HighScore.objects.all().filter(game=current_game).order_by('-score')[:5]
-	context = {'game': current_game, 'high_scores': high_score_list}
+
+	# Checks if user owns this game, True if does, False if not
+	if request.user.is_authenticated():
+		user_owns_game = len(BoughtGames.objects.all().filter(game=current_game).filter(user=request.user)) > 0
+	else:
+		user_owns_game = False
+
+	context = {'game': current_game, 'high_scores': high_score_list, 'owned': user_owns_game}
 	return render(request, 'gameview/index.html', context)
 
 # Defines an 'endpoint' for our ajax POST function in the gameview template.
 # When submitting a score, a function sends the score with an ajax function
 # and it gets handled here.
-
-#TODO & IMPORTANT: Not sure, but i'm pretty confident that the score input can be manipulated. For example,
-# if the score key-value is intercepted a mysql-injection can be performed. This is something that should
-# be investigated
 
 def score(request, game_id):
 	# Request contains the crsftoken and the data sent from the template
@@ -63,26 +74,135 @@ def load(request, game_id):
 	# In case of no game saves
 	except OperationalError:
 		return (HttpResponse("error"))
-	return JsonResponse(serializers.serialize('json', mostRecentSave, fields=('state')), safe=False)
+	# Check if most recent save is empty or not
+	if not mostRecentSave:
+		return (HttpResponse('Errors', status=400))
+	else:
+		return JsonResponse(serializers.serialize('json', mostRecentSave, fields=('state')), safe=False)
 
-def buy(request, game_id):
+@login_required
+def buy_game(request, game_id):
 	game = Game.objects.get(id=game_id)
+	user_id = request.user.id
 
-	pid = "12345" # TODO Change to a unique id (f.ex. gameid + userid)
-	sid = "AKAGameStore"
-	amount = game.price
+	# Check if user owns game.
+	user_owns_game = len(BoughtGames.objects.all().filter(game=game).filter(user=request.user)) > 0
+
+
+	if not user_owns_game:
+		pid = str(user_id) + "-" + game_id # Can be any random id, just needs to be unique
+		sid = "AKAGameStore"
+		amount = game.price
+		secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
+		checksum_str = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+		m = md5(checksum_str.encode("ascii")) # encoding the checksum
+		checksum = m.hexdigest()
+
+		context = {
+			'pid': pid,
+			'sid': sid,
+			'amount': amount,
+			'secret_key': secret_key,
+			'checksum': checksum,
+			'game_id': game_id,
+			'game': game
+		}
+
+		return render(request, 'gameview/payment.html', context)
+	# If user owns game, redirect to home page.
+	else:
+		return redirect('/store/')
+
+def successful_payment(request, game_id):
+	pid = request.GET['pid'] # payment ID
+	ref = request.GET['ref'] # reference to payment
+	url_checksum = request.GET['checksum']
+
 	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
-	checksum_str = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
-	m = md5(checksum_str.encode("ascii")) # encoding the checksum
+	checksum_str = "pid={}&ref={}&result={}&token={}".format(pid, ref, "success", secret_key)
+
+	m = md5(checksum_str.encode("ascii"))
 	checksum = m.hexdigest()
 
-	context = {
-		'pid': pid,
-		'sid': sid,
-		'amount': amount,
-		'secret_key': secret_key,
-		'checksum': checksum,
-		'game_id': game_id
-	}
+	# user_id, game_id = pid.split('-')
+	game = Game.objects.get(id=game_id)
+	current_user = request.user
 
-	return render(request, 'gameview/payment.html', context)
+	if current_user:
+		if url_checksum == checksum:
+			# TODO check from owned games that it is not already purchased
+			# TODO add to owned games
+			# TODO add to game purchase history
+
+			user = User.objects.get(id=current_user.id) # Is this equal to current_user?
+			print(user)
+
+			print(current_user)
+
+			bought_game = BoughtGames(game = game, user = user)
+			bought_game.save()
+
+			context = {
+				'game': game,
+			}
+
+			return render(request, 'gameview/success.html', context)
+		else:
+			return render(request, 'gameview/success.html', {'error': "error"}) # TODO
+
+def error_payment(request, game_id):
+	pid = request.GET['pid'] # payment ID
+	ref = request.GET['ref'] # reference to payment
+	url_checksum = request.GET['checksum']
+
+	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
+	checksum_str = "pid={}&ref={}&result={}&token={}".format(pid, ref, "error", secret_key)
+
+	m = md5(checksum_str.encode("ascii"))
+	checksum = m.hexdigest()
+
+	# user_id, game_id = pid.split('-')
+	game = Game.objects.get(id=game_id)
+	user = request.user
+	if user:
+		if url_checksum == checksum:
+			# TODO check from owned games that it is not already purchased
+			# TODO add to owned games
+			# TODO add to game purchase history
+
+			context = {
+				'game': game,
+			}
+
+			return render(request, 'gameview/error.html', context)
+		else: # wrong checksum
+			return render(request, 'gameview/success.html', {'error': "error"}) # TODO
+	else: # user not logged in
+		return render(request, 'gameview/success.html', {'error': "error"}) # TODO
+
+def cancel_payment(request, game_id):
+	pid = request.GET['pid'] # payment ID
+	ref = request.GET['ref'] # reference to payment
+	url_checksum = request.GET['checksum']
+
+	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
+	checksum_str = "pid={}&ref={}&result={}&token={}".format(pid, ref, "cancel", secret_key)
+
+	m = md5(checksum_str.encode("ascii"))
+	checksum = m.hexdigest()
+
+	# user_id, game_id = pid.split('-')
+	game = Game.objects.get(id=game_id)
+
+	if url_checksum == checksum:
+		# TODO check from owned games that it is not already purchased
+		# TODO add to owned games
+		# TODO add to game purchase history
+
+		context = {
+			'game': game,
+		}
+
+		return render(request, 'gameview/cancel.html', context)
+	else:
+		return render(request, 'gameview/success.html', {'error': "error"}) # TODO

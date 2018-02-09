@@ -2,11 +2,16 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.generic.edit import UpdateView
 from .forms import NewGameForm
-from store.models import Game
+from store.models import Game, BoughtGames
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import Group
+from django import template
+from common.util import user_is_developer
 
-# Create your views here.
+# If user is not logged in and tries to access developer page, user is prompted to log in.
+@user_passes_test(user_is_developer, login_url='/auth/login/', redirect_field_name=None)
 def index(request):
-    print("juu")
     # handling form actions
     if request.method == 'POST':
         form = NewGameForm(request.POST)
@@ -24,8 +29,13 @@ def index(request):
 
     return render(request, 'developer/index.html', {'form':form})
 
+@login_required
 def edit(request):
     games = Game.objects.filter(developer_id = request.user.id)
+    # Get stats of selled games
+    for game in games:
+      single_game_stats = BoughtGames.objects.all().filter(game = game)
+      game.sales = len(single_game_stats)
     context = { 'games': games }
 
     return render(request, 'developer/edit.html', context)

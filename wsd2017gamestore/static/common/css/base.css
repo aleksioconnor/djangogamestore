@@ -1,0 +1,77 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+.root {
+  margin-top: 20px;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+}
+
+/* from here on sort these to their individiual css files */
+
+.green {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    right: 0;
+    height: 330px;
+    background-color: #21d160;
+    z-index: -1;
+    clip-path: polygon(0 0, 100% 0, 100% 65%, 0 100%);
+}
+
+.games-list {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.game-container {
+  position: relative;
+  width: 200px;
+}
+
+.game-container a {
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.game-image {
+  margin-top: 5px;
+  background-image: url('https://vignette.wikia.nocookie.net/fifa/images/d/d4/FIFA18cover.png/revision/latest?cb=20170930173346');
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 200px;
+}
+.game-price {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    background-color: #ff3860;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 50px; /* match this with height */
+    color: white;
+}
+
+/* These should be in gameview.css */
+
+#gameframe {
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  margin-top: 20px;
+}
