@@ -25,6 +25,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
+    './static/bootstrap/'
 ]
 
 # Quick-start development settings - unsuitable for production
@@ -66,7 +67,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-# Using console.EmailBackend for now, if time allows TODO: change to a real email 
+# Using console.EmailBackend for now, if time allows TODO: change to a real email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ROOT_URLCONF = 'wsd2017gamestore.urls'
