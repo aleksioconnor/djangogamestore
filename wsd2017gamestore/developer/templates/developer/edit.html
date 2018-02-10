@@ -1,5 +1,5 @@
-{% include "base.html" %}
-
+{% extends "base.html" %}
+{% block content %}
 {% if user.is_authenticated %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <!-- ### JAVASCRIPT ### -->
@@ -36,3 +36,4 @@
 </table>
 
 {% endif %}
+{% endblock %}
