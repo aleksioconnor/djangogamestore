@@ -59,6 +59,14 @@ def score(request, game_id):
 	# Safe is false to allow non-dict objects to be serialized
 	return JsonResponse(serializers.serialize('json', scores), safe=False)
 
+# This is the best way to define endpoint. refactor to others
+# This endpoint retrieves the top 5 high scores for the game
+def scores(request, game_id):
+	currentGame = Game.objects.get(id=game_id)
+	scores = HighScore.objects.all().filter(game=currentGame).order_by('-score')[:5]
+	data = [{'score': item.score, 'player': item.player.username } for item in scores]
+	return HttpResponse(json.dumps(data), content_type='application/json')
+
 def state(request, game_id):
 	post = request.POST
 	state = post['state']

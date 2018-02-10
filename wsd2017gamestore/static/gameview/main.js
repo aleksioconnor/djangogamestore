@@ -3,7 +3,6 @@
 // Adds event listener to window, which will monitor any incoming messages
 // from the iFrame
 window.addEventListener('message', function (message) {
-  // Switch clause
   switch (message.data.messageType) {
 
     // If message type is score, save high score
@@ -76,6 +75,7 @@ window.addEventListener('message', function (message) {
       },
       url: "score/",
       success: function (result) {
+        getHighScores()
         // TODO: Send message to iframe, and handle errors
       }
     })
@@ -115,6 +115,19 @@ window.addEventListener('message', function (message) {
     })
   }
 
+  function getHighScores() {
+    $.ajax({
+      type: "GET",
+      url: "scores/",
+      success: function(result) {
+        $('#scores').empty()
+        $.each(result, function(i, n) {
+          $('#scores').append(n.player + ": " + n.score + "<br>")
+        })
+      }
+    })
+  }
+
   function iframeMessage(message) {
     var iframe = $('#gameframe');
     if (iframe) {
@@ -126,3 +139,8 @@ window.addEventListener('message', function (message) {
     var json = JSON.parse(data);
     return json;
   }
+
+// Document ready for retrieving high scores
+$(document).ready(function(){
+  getHighScores();
+})

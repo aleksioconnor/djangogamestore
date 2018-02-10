@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-
-
 {% block javascript %}
 <script>
   var csrf = "{% csrf_token %}"
@@ -29,12 +27,8 @@
       </div>
   {% endif %}
 
-  <div id="scores">
       {% if logged_in %}
-        Global high score list: <br>
-        {% for score in high_scores %}
-            {{ score.player }} got a score of {{ score }} <br>
-        {% endfor %}
+        <div id="scores">
       {% endif %}
   </div>
 
