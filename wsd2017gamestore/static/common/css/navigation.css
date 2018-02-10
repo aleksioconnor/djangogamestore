@@ -1,14 +1,4 @@
-/**.nav {
-  padding-top: 10px;
-  position: relative;
-  top: 0px;
-  width: 100%;
-  height: 50px;
-  color: white;
-  display: flex;
-  justify-content: space-between;
+a {
+  padding-left: 30px;
+  padding-right: 30px;
 }
-
-.nav a {
-  color: white;
-}*/
