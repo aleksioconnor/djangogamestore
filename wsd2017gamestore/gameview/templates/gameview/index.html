@@ -16,20 +16,27 @@
 
   {% if owned %}
       <iframe src="{{ game.url }}" id="gameframe" frameborder="0"></iframe>
+  {% elif not logged_in %}
+      <br>
+      <div class='info-modal'>
+          <a type="button" href="/auth/login/">Log in</a> in order to buy or play this game.
+      </div>
+
   {% else %}
-  <br>
+      <br>
       <div class='info-modal'>
           Please 	<a type="button" href="payment/">buy this game</a> to play it.
       </div>
   {% endif %}
 
   <div id="scores">
-      Global high score list: <br>
-      {% for score in high_scores %}
-          {{ score.player }} got a score of {{ score }} <br>
-      {% endfor %}
+      {% if logged_in %}
+        Global high score list: <br>
+        {% for score in high_scores %}
+            {{ score.player }} got a score of {{ score }} <br>
+        {% endfor %}
+      {% endif %}
   </div>
 
   <br>
 {% endblock %}
-

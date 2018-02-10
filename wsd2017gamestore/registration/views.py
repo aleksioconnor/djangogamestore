@@ -1,7 +1,14 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.contrib.auth.models import Group
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+from .models import Profile
+import string
+import random
 
 from .forms import SignUpForm
 
@@ -17,7 +24,12 @@ def signup(request):
             # Get relevant data from form
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            user_type = form.cleaned_data.get('user_type')
+            user_typ = form.cleaned_data.get('user_type')
+            email = form.cleaned_data.get('email')
+
+            #Create a random key to the activation_url
+            key = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(25))
+            print(key)
 
             # Authenticate verifies a set of credentials.
             # It takes credentials as keyword arguments, and
@@ -25,13 +37,32 @@ def signup(request):
             # Returns a User object if the credentials are
             # valid. If authentication fails, returns None.
             # Should be clarified why this works in registration - couldn't find why in django docs
-            user = authenticate(username=username, password=raw_password, user_type=user_type)
+            print('#################: ' + user_typ)
+            user = authenticate(username=username, password=raw_password)
+            this_user = Profile.objects.create(user=user, activation_key=key, user_type = user_typ, is_activated = False)
+            user.save()
 
+            #TODO: change localhost to base url
+            activation_url = 'http://localhost:8000/signup/activation?key={key}&uid={uid}'.format(key=key, uid = user.id)
+            # Prep the message
+            message = render_to_string('registration/email_activation.html', {
+                'name': username,
+                #Send the activation key and the user related to it in URL parameters
+                'activation_url': activation_url,
+            })
+
+            send_mail(
+                  'Activate your AKAgamestore account',
+                  message,
+                  # From email
+                  'no-reply@akagamestore.com',
+                  # To email
+                  [email])
             # Login takes a HttpRequest object and a User object as a parameter
             login(request, user)
 
             # Returns the desired group object
-            group = Group.objects.get(name=user_type)
+            group = Group.objects.get(name=user_typ)
 
             # Adds the user to the desired group
             user.groups.add(group)
@@ -47,3 +78,17 @@ def signup(request):
 
 def logout_view(request):
     logout(request)
+
+def activate(request):
+    #get the key and and the uid from URL parameters
+    key = request.GET.get('key', '')
+    uid = request.GET.get('uid', '')
+    username = 'user.id'
+    current_user = Profile.objects.get(user = uid)
+    print(current_user.is_activated)
+    if key == current_user.activation_key:
+        current_user.is_activated = True
+        current_user.save()
+        print(current_user.is_activated)
+
+    return HttpResponse('Your email has been confirmed and your account has been activated.')

@@ -32,7 +32,7 @@ def index(request, game_id):
 	else:
 		user_owns_game = False
 
-	context = {'game': current_game, 'high_scores': high_score_list, 'owned': user_owns_game}
+	context = {'game': current_game, 'high_scores': high_score_list, 'owned': user_owns_game, 'logged_in': request.user.is_authenticated()}
 	return render(request, 'gameview/index.html', context)
 
 # Defines an 'endpoint' for our ajax POST function in the gameview template.
@@ -89,7 +89,7 @@ def buy_game(request, game_id):
 	user_owns_game = len(BoughtGames.objects.all().filter(game=game).filter(user=request.user)) > 0
 
 
-	if not user_owns_game:
+	if request.user.is_authenticated() and not user_owns_game:
 		pid = str(user_id) + "-" + game_id # Can be any random id, just needs to be unique
 		sid = "AKAGameStore"
 		amount = game.price
@@ -113,6 +113,7 @@ def buy_game(request, game_id):
 	else:
 		return redirect('/store/')
 
+@login_required
 def successful_payment(request, game_id):
 	pid = request.GET['pid'] # payment ID
 	ref = request.GET['ref'] # reference to payment
@@ -150,6 +151,7 @@ def successful_payment(request, game_id):
 		else:
 			return render(request, 'gameview/success.html', {'error': "error"}) # TODO
 
+@login_required
 def error_payment(request, game_id):
 	pid = request.GET['pid'] # payment ID
 	ref = request.GET['ref'] # reference to payment
