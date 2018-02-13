@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.template import loader
-from .models import Game, BoughtGames
+from .models import Game, BoughtGames, Category
 from django.contrib.auth.models import User
 from itertools import chain
 
@@ -8,6 +8,8 @@ def index(request):
 	most_recent_game = Game.objects.order_by('price')
 	games = most_recent_game
 	user_id = request.user.id
+	# Retrieve all categories
+	categories = Category.objects.all()
 
 	if request.user.is_authenticated():
 		bought_games = []
@@ -27,5 +29,6 @@ def index(request):
 		'games' : games,
 		'id' : id,
 		'owned_games' : owned_games,
+		'categories' : categories,
 	}
 	return render(request, 'store/index.html', context)

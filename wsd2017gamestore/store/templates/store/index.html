@@ -1,11 +1,6 @@
-{% extends "base.html" %} {% block content %}
-<!--
-  <form action="/store/" method="post">
-      {% csrf_token %}
-      {{ form }}
-      <input type="submit" value="Submit" />
-  </form>
--->
+{% extends "base.html" %}
+
+{% block content %}
 <div class='root'>
   <div class='green'></div>
   {% if user.is_authenticated %}
@@ -23,16 +18,21 @@
   </div>
   {% endif %}
 
+
   <h3>All games</h3>
-  <div class='games-list row'>
+  {% for category in categories %}
+    <h4>{{ category.name }}</h4>
+      <div class='games-list row'>
       {% for game in games %}
+        {% if game.category == category %}
           <div class='game-container'>
             <div class='game-price'>{{ game.price }} €</div>
-        <a href='/game/{{game.id}}'>{{ game.name }}
-          <div class='game-image'></div>
-        </a>
-      </div>
-    {% endfor %}
-        </div>
-</div>
+            <a href='/game/{{game.id}}'>{{ game.name }}
+              <div class='game-image'></div>
+            </a>
+          </div> <!-- game-container -->
+        {% endif %}
+      {% endfor %}
+      </div> <!-- games-list row -->
+  {% endfor %}
 {% endblock %}
