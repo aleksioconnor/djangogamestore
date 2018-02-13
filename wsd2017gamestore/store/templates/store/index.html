@@ -13,9 +13,9 @@
   <div class='games-list row'>
     {% for owned_game in owned_games %}
     <div class='game-container'>
-                  <div class='game-price'>{{ owned_game.game.price}} €</div>
+      <div class='game-price'>{{ owned_game.price}} €</div>
 
-      <a href='/game/{{owned_game.game.id}}'>{{ owned_game.game.name }}
+      <a href='/game/{{owned_game.id}}'>{{ owned_game.name }}
         <div class='game-image'></div>
       </a>
     </div>

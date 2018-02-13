@@ -23,16 +23,20 @@ def index(request, game_id):
 	# Checks what game is being currently viewed from the id
 	current_game = Game.objects.get(id=game_id)
 
+	# Gets users id
+	user_id = request.user.id
+
 	# Retrieves global top five scores associated with this game
 	high_score_list = HighScore.objects.all().filter(game=current_game).order_by('-score')[:5]
 
-	# Checks if user owns this game, True if does, False if not
+	# Checks if user owns or has developed this game, True if does, False if not
 	if request.user.is_authenticated():
 		user_owns_game = len(BoughtGames.objects.all().filter(game=current_game).filter(user=request.user)) > 0
+		user_developed_game = len(Game.objects.all().filter(name=current_game.name).filter(developer_id=user_id)) > 0
 	else:
 		user_owns_game = False
 
-	context = {'game': current_game, 'high_scores': high_score_list, 'owned': user_owns_game, 'logged_in': request.user.is_authenticated()}
+	context = {'game': current_game, 'high_scores': high_score_list, 'owned': user_owns_game, 'developed': user_developed_game, 'logged_in': request.user.is_authenticated()}
 	return render(request, 'gameview/index.html', context)
 
 # Defines an 'endpoint' for our ajax POST function in the gameview template.
