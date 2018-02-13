@@ -9,7 +9,7 @@ class Category(models.Model):
 class Game(models.Model):
     name = models.CharField(max_length=200)
     # pub_date = models.DateTimeField('date published')
-    price = models.IntegerField(default=0)
+    price = models.FloatField(default=0)
     url = models.URLField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     developer_id = models.IntegerField(default=0)
