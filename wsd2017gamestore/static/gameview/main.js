@@ -4,7 +4,6 @@
 // from the iFrame
 window.addEventListener('message', function (message) {
   switch (message.data.messageType) {
-
     // If message type is score, save high score
     case "SCORE":
       saveHighScore(message.data.score)
@@ -18,10 +17,6 @@ window.addEventListener('message', function (message) {
     // If message type is load request, load game
     case "LOAD_REQUEST":
       requestLoad();
-      break;
-
-    // TODO: Add error handling.
-    case "ERROR":
       break;
 
     // change the size of the iframe according to options received from iFrame
@@ -46,17 +41,29 @@ window.addEventListener('message', function (message) {
  */
 
   function saveGameState(state) {
-    var data = JSON.stringify(state);
+    var message = {
+      score: state.score,
+      playerItems: state.playerItems,
+    }
+
+    var messageAsString = JSON.stringify(message)
 
     $.ajax({
       type: "POST",
       data: {
-        'state': data,
-        'csrfmiddlewaretoken': token,
-      },
+        state: messageAsString,
+        csrfmiddlewaretoken: token,
+        },
       url: "state/",
       success: function (result) {
-        // TODO: Send message to iframe, and handle error
+        alert('Game saved.');
+      },
+      error: function (err) {
+        var iframe = $('#gameframe')[0];
+        var message = {};
+        message.messageType = "ERROR";
+        message.info = "Something went wrong with saving the game."
+        iframe.contentWindow.postMessage(message, "*");
       }
     });
   }
@@ -65,6 +72,8 @@ window.addEventListener('message', function (message) {
  * @param { int }
  *
  * Function sends score to 'score' endpoint. See /gameview/views for details.
+ * On success, updates high score list.
+ * On error, sends the iframe a message.
  */
   function saveHighScore(score) {
     $.ajax({
@@ -76,45 +85,49 @@ window.addEventListener('message', function (message) {
       url: "score/",
       success: function (result) {
         getHighScores()
-        // TODO: Send message to iframe, and handle errors
+      },
+      error: function (error) {
+        var iframe = $('#gameframe')[0];
+        var message = {};
+        message.messageType = "ERROR";
+        message.info = "Something went wrong with submitting the high score."
+        iframe.contentWindow.postMessage(message, "*");
       }
     })
   }
 
 /**
  * Function requests newest save from 'load' endpoint.
- *
+ * On success, loads the most recent save.
+ * On failure, sens a message to the iframe.
  */
   function requestLoad() {
     $.ajax({
       type: "GET",
       url: "load/",
       success: function (result) {
-          var json = parseJson(result);
-
-          // Hacky fix to return the message to json format
-          var gameState = parseJson(json[0].fields.state)
-          var iframe = $('#gameframe')[0]
-          var message = {};
-
-          message.messageType = "LOAD";
-          message.gameState = gameState;
-
-          iframe.contentWindow.postMessage(message, "*");
+        var gameState = (JSON.parse(result[0].data));
+        var iframe = $('#gameframe')[0]
+        var message = {};
+        message.messageType = "LOAD";
+        message.gameState = gameState;
+        iframe.contentWindow.postMessage(message, "*");
         },
       error: function(result) {
-        // Messages should be handled in views i guess?
         var iframe = $('#gameframe')[0]
-
         var message = {};
         message.messageType = "ERROR";
         message.info = "No saved games found";
         iframe.contentWindow.postMessage(message, "*");
-        
       }
     })
   }
 
+/**
+ * Function requests high score list.
+ * Appends high scores to score div.
+ * On error, displays error message.
+ */
   function getHighScores() {
     $.ajax({
       type: "GET",
@@ -124,20 +137,12 @@ window.addEventListener('message', function (message) {
         $.each(result, function(i, n) {
           $('#scores').append(n.player + ": " + n.score + "<br>")
         })
+      },
+      error: function(error) {
+        $('#scores').empty();
+        $('#scores').html("<div class='error'> Something went wrong loading the high scores.</div>");
       }
     })
-  }
-
-  function iframeMessage(message) {
-    var iframe = $('#gameframe');
-    if (iframe) {
-      iframe.contentWindow.postMessage(message)
-    }
-  }
-
-  function parseJson(data) {
-    var json = JSON.parse(data);
-    return json;
   }
 
 // Document ready for retrieving high scores
