@@ -56,7 +56,7 @@ window.addEventListener('message', function (message) {
         },
       url: "state/",
       success: function (result) {
-        alert('Game saved.');
+        checkForSaves();
       },
       error: function (err) {
         var iframe = $('#gameframe')[0];
@@ -145,7 +145,23 @@ window.addEventListener('message', function (message) {
     })
   }
 
+  function checkForSaves() {
+    $.ajax({
+      type: "GET",
+      url: "load/",
+      success: function(result) {
+        var container = $('#loadgame');
+        container.html('<div>You have saved games available, click here to load them.</div>')
+        container.on('click touch', function() {
+          container.empty();
+          requestLoad();
+        });
+      }
+    })
+  }
+
 // Document ready for retrieving high scores
 $(document).ready(function(){
   getHighScores();
+  checkForSaves();
 })
