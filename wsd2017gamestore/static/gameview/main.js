@@ -42,7 +42,6 @@ window.addEventListener('message', function (message) {
 
   function saveGameState(state) {
     var messageAsString = JSON.stringify(state)
-    console.log(state);
     $.ajax({
       type: "POST",
       data: {

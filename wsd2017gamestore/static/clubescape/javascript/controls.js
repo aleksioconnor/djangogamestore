@@ -1,10 +1,7 @@
  // Player movement and controls
-console.log("ran")
 window.addEventListener('message', function (message) {
-  console.log(message.data.messageType);
   switch (message.data.messageType) {
     case "LOAD":
-      console.log("load req")
       temp = message.data.gameState.temp;
       score = message.data.gameState.score;
       break;
