@@ -71,6 +71,7 @@ def scores(request, game_id):
 def state(request, game_id):
 	# Get post content
 	post = request.POST
+	print(post)
 
 	# Access state from HTTP post
 	try:

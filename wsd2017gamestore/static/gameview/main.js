@@ -41,13 +41,8 @@ window.addEventListener('message', function (message) {
  */
 
   function saveGameState(state) {
-    var message = {
-      score: state.score,
-      playerItems: state.playerItems,
-    }
-
-    var messageAsString = JSON.stringify(message)
-
+    var messageAsString = JSON.stringify(state)
+    console.log(state);
     $.ajax({
       type: "POST",
       data: {
@@ -76,6 +71,7 @@ window.addEventListener('message', function (message) {
  * On error, sends the iframe a message.
  */
   function saveHighScore(score) {
+    console.log(score)
     $.ajax({
       type: "POST",
       data: {
