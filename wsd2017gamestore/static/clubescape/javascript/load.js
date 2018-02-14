@@ -18,7 +18,6 @@ var loadState = {
         game.load.audio('coin', 'music/coin.mp3');
         game.load.spritesheet('sprite', 'pictures/sprite2.png', 30, 50, 5);
         //Informing load is complete
-        console.log("Load complete");
     },
  
     create: function () {

@@ -71,6 +71,26 @@ var playState = {
             font: '32px Arial',
             fill: '#FFF'
         });
+        var save_game = game.add.text(10, 80, 'Press S to save and L to load', {
+            font: '20px Arial',
+            fill: 'pink'
+        });
+  var lkey = game.input.keyboard.addKey(Phaser.Keyboard.L);
+
+lkey.onUp.add(function(){
+  var message = {};
+  message.messageType = "LOAD_REQUEST",
+  parent.postMessage(message, "*");
+})
+
+                 var skey = game.input.keyboard.addKey(Phaser.Keyboard.S);
+        skey.onUp.add(function() {
+          var messaged = {};
+          messaged.messageType = "SAVE",
+          messaged.gameState = {temp: temp, score: score};
+          
+          parent.postMessage(messaged, "*")
+        })
 
     },
 

@@ -24,8 +24,9 @@ var instructionsState = {
             font: '25px Arial',
             fill: 'pink'
         });
-        var keyboard = game.add.sprite(380, 410, 'keyboard');
         
+        var keyboard = game.add.sprite(380, 410, 'keyboard');
+
         var spacekey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         var tabkey = game.input.keyboard.addKey(Phaser.Keyboard.TAB);
         tabkey.onDown.addOnce(this.menu, this);
@@ -41,7 +42,5 @@ var instructionsState = {
     start: function () {
         game.state.start('play');
     }
-
-
-
 };
+

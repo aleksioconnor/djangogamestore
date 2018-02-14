@@ -9,8 +9,6 @@ game.state.add('instructions', instructionsState);
 game.state.add('play', playState);
 game.state.add('over', overState);
  
-//Lets inform the user were pass this state through the console log
-console.log("Game started");
  
 // Lets call the boot state!
 game.state.start('boot');

@@ -1,8 +1,8 @@
+
 // We made this function just to make randomizing platfroms etc a bit simpler. Phaser has its own inbuilt version of this, but it didn't quite suit our needs.
 function satu(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
 
 // A few functions for impact with other objects in-game
 function collectstars(hero, star) {
@@ -11,7 +11,6 @@ function collectstars(hero, star) {
     coin = game.add.audio('coin');
     coin.play();
 }
-
 
 function killplayer(hero, monster) {
     hero.kill();
@@ -42,11 +41,11 @@ function killplayer(hero, monster) {
     //And text declaring the score
     var text = game.add.text(game.world.centerX, game.world.centerY, "Game Over! \n Your score was: " + final_score, style);
     // Send high score to iframe parent
-    score = {
+    scoreMessage = {
       messageType: "SCORE",
       score: final_score,
     }
-    parent.postMessage(score, '*')
+    parent.postMessage(scoreMessage, '*')
     // And the text declaring instructions for the player
     var text2 = game.add.text(game.world.centerX, game.world.centerY, "press Space to restart or Tab for menu", style2);
     //Styling etx
