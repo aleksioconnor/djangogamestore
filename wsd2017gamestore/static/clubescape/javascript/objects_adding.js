@@ -34,7 +34,6 @@ function addObjects() {
             valimuisti.body.y = 300;
         }
         var random = satu((valimuisti.body.y - 200), 500);
-        console.log("matala", valimuisti.body.y);
     }
 
     // Just checking this isn't the first time we're running through this code

@@ -12,7 +12,7 @@
   <div id="frame_div"></div>
   <div id="message"></div>
 
-  {% if owned %}
+  {% if owned or developed %}
       <iframe src="{{ game.url }}" id="gameframe" frameborder="0"></iframe>
   {% elif not logged_in %}
       <br>
@@ -27,10 +27,10 @@
       </div>
   {% endif %}
 
-      {% if logged_in %}
+      {% if logged_in and owned or logged_in and developed  %}
         <div id="scores">
+        <div id="loadgame"></div>
       {% endif %}
-  </div>
 
   <br>
 {% endblock %}

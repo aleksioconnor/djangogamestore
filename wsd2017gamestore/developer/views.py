@@ -20,8 +20,9 @@ def index(request):
             name = form.cleaned_data['game_name']
             price = form.cleaned_data['game_price']
             url = form.cleaned_data['game_url']
+            category = form.cleaned_data['category']
             dev_id = request.user.id
-            g = Game(name=name, price=price, url=url, developer_id=dev_id)
+            g = Game(name=name, price=price, url=url, developer_id=dev_id, category=category)
             g.save()
             form = NewGameForm()
     else:

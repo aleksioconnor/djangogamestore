@@ -11,7 +11,3 @@ class Profile(models.Model):
     is_activated = models.BooleanField(default=False)
     activation_key = models.CharField(max_length=25, default='')
 
-
-# class Developer(models.Model):
-#     user =
-#     Games =

@@ -28,8 +28,6 @@ var menuState = {
         var hero = game.add.sprite(370, 300, 'sprite');
         hero.animations.add('right', [0, 1, 2], 5, true);
         hero.animations.play('right');
-
- 
     },
  
     start: function () {
