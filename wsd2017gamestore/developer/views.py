@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from django.views.generic.edit import UpdateView
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic.edit import UpdateView, DeleteView
 from .forms import NewGameForm
 from store.models import Game, BoughtGames
 from django.contrib.auth.decorators import login_required
@@ -32,7 +33,7 @@ def index(request):
 @login_required
 def edit(request):
     games = Game.objects.filter(developer_id = request.user.id)
-    # Get stats of selled games
+    # Get stats of sold games
     for game in games:
       single_game_stats = BoughtGames.objects.all().filter(game = game)
       game.sales = len(single_game_stats)
@@ -44,3 +45,7 @@ def edit(request):
 class GameEdit(UpdateView):
         model = Game
         fields = ['name', 'price', 'url']
+
+class GameDelete(DeleteView):
+    model = Game
+    success_url = reverse_lazy('edit')
