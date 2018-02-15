@@ -43,7 +43,9 @@ def signup(request):
             user.save()
 
             #TODO: change localhost to base url
-            activation_url = 'http://localhost:8000/signup/activation?key={key}&uid={uid}'.format(key=key, uid = user.id)
+            print('jooojoo')
+            current_host = request.META.get('HTTP_HOST')
+            activation_url = 'http://{current_host}/signup/activation?key={key}&uid={uid}'.format(current_host=current_host, key=key, uid = user.id)
             # Prep the message
             message = render_to_string('registration/email_activation.html', {
                 'name': username,
