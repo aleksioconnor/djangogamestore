@@ -27,7 +27,6 @@ def index(request):
             form = NewGameForm()
     else:
         form = NewGameForm()
-        print(request.user.id)
 
     return render(request, 'developer/index.html', {'form':form})
 

@@ -71,7 +71,6 @@ def scores(request, game_id):
 def state(request, game_id):
 	# Get post content
 	post = request.POST
-	print(post)
 
 	# Access state from HTTP post
 	try:
@@ -126,6 +125,7 @@ def buy_game(request, game_id):
 		checksum_str = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
 		m = md5(checksum_str.encode("ascii")) # encoding the checksum
 		checksum = m.hexdigest()
+		current_host = request.META.get('HTTP_HOST')
 
 		context = {
 			'pid': pid,
@@ -134,7 +134,8 @@ def buy_game(request, game_id):
 			'secret_key': secret_key,
 			'checksum': checksum,
 			'game_id': game_id,
-			'game': game
+			'game': game,
+			'current_host': current_host
 		}
 
 		return render(request, 'gameview/payment.html', context)
