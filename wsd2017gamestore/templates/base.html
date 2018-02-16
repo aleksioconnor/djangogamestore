@@ -6,11 +6,6 @@
         <title>Gamestore</title>
         <meta name="description" content="Gamestore">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta property="og:url" content="localhost:8000{{request.get_full_path}}" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Your Website Title" />
-        <meta property="og:description" content="Try out this game!" />
-        <meta property="og:image" content="https://www.your-domain.com/path/image.jpg" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/static/common/css/base.css">
 
@@ -19,6 +14,8 @@
         {% block javascript %}
         {% endblock %}
         {% block css %}
+        {% endblock %}
+        {% block meta %}
         {% endblock %}
     </head>
     <body>

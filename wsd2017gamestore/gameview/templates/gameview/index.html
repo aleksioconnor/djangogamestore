@@ -7,14 +7,24 @@
 <script src='/static/gameview/main.js'></script>
 {% endblock %}
 
-{% include "social.html" %}
+{% block meta %}
+<meta property="og:title"         content="AKA Gamestore - {{game.name}}" />
+<meta property="og:description"   content="Game description here!!" />
+<meta property="og:image"         content="https://www.your-domain.com/path/image.jpg" />
+{% endblock %}
+
 {% block content %}
+
   <h2>Game name: {{game.name}}</h2>
   <div id="frame_div"></div>
   <div id="message"></div>
 
   {% if owned or developed %}
       <iframe src="{{ game.url }}" id="gameframe" frameborder="0"></iframe>
+
+      <!-- Share button code -->
+      <div class="fb-share-button" data-href="http://wsd2017gamestore.herokuapp.com/game/{{game_id}}/"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwsd2017gamestore.herokuapp.com%2Fgame%2F{{game_id}}%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+      <div class="twitter-share-button"><a target="_blank" href="https://twitter.com/intent/tweet?text=Check%20this%20game%20out&url=https://wsd2017gamestore.herokuapp.com/game/{{game_id}}/">Tweet</a></div>
   {% elif not logged_in %}
       <br>
       <div class='info-modal'>
