@@ -49,13 +49,19 @@ def index(request):
 
     return render(request, 'developer/index.html', context)
 
-def edit(request):
-    games = Game.objects.filter(developer_id = request.user.id)
-    # Get stats of sold games
+def info(request, pk):
+    #get game_id from path
+    path = request.META['PATH_INFO']
+    game_id = path[10:-1]
 
-    context = { 'games': games }
+    #get current game and its stats
+    this_game = Game.objects.filter(id = game_id)
+    single_game_stats = BoughtGames.objects.all().filter(game = this_game)
+    sold_items = len(single_game_stats)
 
-    return render(request, 'developer/edit.html', context)
+    context = { 'game': this_game, 'single_game_stats': single_game_stats, 'sold_items': sold_items }
+
+    return render(request, 'developer/info.html', context)
 
 # Takes the template from store/game_form.html TODO: change this
 class GameEdit(UpdateView):

@@ -13,6 +13,9 @@ h1, h2, h3, h4 {
 }
 
 /* from here on sort these to their individiual css files */
+td {
+  padding-right: 1em;
+}
 
 .green {
     position: absolute;
