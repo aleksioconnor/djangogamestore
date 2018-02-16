@@ -28,8 +28,8 @@
       </div>
   {% endif %}
 
-      {% if logged_in and owned  %}
-        <div id="scores"></div>
+      {% if logged_in and owned or logged_in and developed  %}
+        <div id="scores">
         <div id="loadgame"></div>
       {% endif %}
 

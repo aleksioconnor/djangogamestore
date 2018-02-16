@@ -2,11 +2,10 @@
 <!-- TODO: Siirrä tämä tiedosto oikeaan template-kansioon" -->
 <!-- TODO: Validaatio sille, että vain oikea kehittäjä voi muokata tätä peliä -->
 {% block content %}
-
 <form action="" method="post">
   {% csrf_token %}
+  <p>To delete this game, kindly click the following button.</p>
   {{ form.as_p }}
   <input type="submit" value="Submit" />
 </form>
-
 {% endblock %}

@@ -29,7 +29,6 @@ def signup(request):
 
             #Create a random key to the activation_url
             key = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(25))
-            print(key)
 
             # Authenticate verifies a set of credentials.
             # It takes credentials as keyword arguments, and
@@ -37,13 +36,12 @@ def signup(request):
             # Returns a User object if the credentials are
             # valid. If authentication fails, returns None.
             # Should be clarified why this works in registration - couldn't find why in django docs
-            print('#################: ' + user_typ)
             user = authenticate(username=username, password=raw_password)
             this_user = Profile.objects.create(user=user, activation_key=key, user_type = user_typ, is_activated = False)
             user.save()
 
-            #TODO: change localhost to base url
-            activation_url = 'http://localhost:8000/signup/activation?key={key}&uid={uid}'.format(key=key, uid = user.id)
+            current_host = request.META.get('HTTP_HOST')
+            activation_url = 'http://{current_host}/signup/activation?key={key}&uid={uid}'.format(current_host=current_host, key=key, uid = user.id)
             # Prep the message
             message = render_to_string('registration/email_activation.html', {
                 'name': username,
@@ -85,10 +83,8 @@ def activate(request):
     uid = request.GET.get('uid', '')
     username = 'user.id'
     current_user = Profile.objects.get(user = uid)
-    print(current_user.is_activated)
     if key == current_user.activation_key:
         current_user.is_activated = True
         current_user.save()
-        print(current_user.is_activated)
 
     return HttpResponse('Your email has been confirmed and your account has been activated.')

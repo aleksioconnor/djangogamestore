@@ -71,7 +71,6 @@ def scores(request, game_id):
 def state(request, game_id):
 	# Get post content
 	post = request.POST
-	print(post)
 
 	# Access state from HTTP post
 	try:
@@ -113,10 +112,12 @@ def buy_game(request, game_id):
 	game = Game.objects.get(id=game_id)
 	user_id = request.user.id
 
-	# Check if user owns game.
+	# Check if user owns this game
 	user_owns_game = len(BoughtGames.objects.all().filter(game=game).filter(user=request.user)) > 0
+	# Check if user has developed this game
+	user_developed_game = len(Game.objects.all().filter(name=game.name).filter(developer_id=user_id)) > 0
 
-	if request.user.is_authenticated() and not user_owns_game:
+	if request.user.is_authenticated() and not user_owns_game and not user_developed_game:
 		pid = str(user_id) + "-" + game_id # Can be any random id, just needs to be unique
 		sid = "AKAGameStore"
 		amount = game.price
@@ -124,6 +125,7 @@ def buy_game(request, game_id):
 		checksum_str = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
 		m = md5(checksum_str.encode("ascii")) # encoding the checksum
 		checksum = m.hexdigest()
+		current_host = request.META.get('HTTP_HOST')
 
 		context = {
 			'pid': pid,
@@ -132,7 +134,8 @@ def buy_game(request, game_id):
 			'secret_key': secret_key,
 			'checksum': checksum,
 			'game_id': game_id,
-			'game': game
+			'game': game,
+			'current_host': current_host
 		}
 
 		return render(request, 'gameview/payment.html', context)
@@ -153,15 +156,12 @@ def successful_payment(request, game_id):
 	m = md5(checksum_str.encode("ascii"))
 	checksum = m.hexdigest()
 
-	# user_id, game_id = pid.split('-')
+	buyer_id = pid.split('-')[0]
 	game = Game.objects.get(id=game_id)
 	current_user = request.user
 
-	if current_user:
-		if url_checksum == checksum:
-			# TODO check from owned games that it is not already purchased
-			# TODO add to owned games
-			# TODO add to game purchase history
+	if request.user.is_authenticated():
+		if url_checksum == checksum and str(current_user.id) == buyer_id:
 
 			user = User.objects.get(id=current_user.id) # Is this equal to current_user?
 			bought_game = BoughtGames(game = game, user = user)
@@ -173,7 +173,9 @@ def successful_payment(request, game_id):
 
 			return render(request, 'gameview/success.html', context)
 		else:
-			return render(request, 'gameview/success.html', {'error': "error"}) # TODO
+			return render(request, 'gameview/error.html', context)
+	else:
+		return render(request, 'gameview/error.html', context)
 
 # Handles erros in payment
 @login_required
@@ -189,46 +191,17 @@ def error_payment(request, game_id):
 	checksum = m.hexdigest()
 
 	game = Game.objects.get(id=game_id)
-	user = request.user
-	if user:
-		if url_checksum == checksum:
-			# TODO check from owned games that it is not already purchased
-			# TODO add to owned games
-			# TODO add to game purchase history
+	context = {
+		'game': game,
+	}
 
-			context = {
-				'game': game,
-			}
+	return render(request, 'gameview/error.html', context)
 
-			return render(request, 'gameview/error.html', context)
-		else: # wrong checksum
-			return render(request, 'gameview/success.html', {'error': "error"}) # TODO
-	else: # user not logged in
-		return render(request, 'gameview/success.html', {'error': "error"}) # TODO
-
-# Handles canceled payments
+@login_required
 def cancel_payment(request, game_id):
-	pid = request.GET['pid'] # payment ID
-	ref = request.GET['ref'] # reference to payment
-	url_checksum = request.GET['checksum']
-
-	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
-	checksum_str = "pid={}&ref={}&result={}&token={}".format(pid, ref, "cancel", secret_key)
-
-	m = md5(checksum_str.encode("ascii"))
-	checksum = m.hexdigest()
-
 	game = Game.objects.get(id=game_id)
+	context = {
+		'game': game,
+	}
 
-	if url_checksum == checksum:
-		# TODO check from owned games that it is not already purchased
-		# TODO add to owned games
-		# TODO add to game purchase history
-
-		context = {
-			'game': game,
-		}
-
-		return render(request, 'gameview/cancel.html', context)
-	else:
-		return render(request, 'gameview/success.html', {'error': "error"}) # TODO
+	return render(request, 'gameview/cancel.html', context)
