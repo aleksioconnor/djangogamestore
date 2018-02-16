@@ -26,18 +26,29 @@ def index(request):
             g.save()
             form = NewGameForm()
     else:
+        # Insert the NewGameForm
         form = NewGameForm()
-        print(request.user.id)
 
-    return render(request, 'developer/index.html', {'form':form})
+        # Own games and edit button
+        own_games = Game.objects.filter(developer_id = request.user.id)
+        print(own_games)
 
-@login_required
+        for game in own_games:
+          single_game_stats = BoughtGames.objects.all().filter(game = game)
+          game.sales = len(single_game_stats)
+
+        context = {
+            'form': form,
+            'own_games': own_games,
+        }
+
+
+    return render(request, 'developer/index.html', context)
+
 def edit(request):
     games = Game.objects.filter(developer_id = request.user.id)
     # Get stats of sold games
-    for game in games:
-      single_game_stats = BoughtGames.objects.all().filter(game = game)
-      game.sales = len(single_game_stats)
+
     context = { 'games': games }
 
     return render(request, 'developer/edit.html', context)
@@ -49,4 +60,4 @@ class GameEdit(UpdateView):
 
 class GameDelete(DeleteView):
     model = Game
-    success_url = reverse_lazy('edit')
+    success_url = reverse_lazy('index')

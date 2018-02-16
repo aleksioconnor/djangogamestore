@@ -1,9 +1,53 @@
 {% extends "base.html" %}
-
 {% block content %}
 <form action="" method="post"> <!-- POST-request the form to /store/ -->
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" />
 </form>
+
+{% if user.is_authenticated %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- ### JAVASCRIPT ### -->
+<script>
+  function editGame(game_id){
+    // Takes the user to the editing page
+    window.location = '/dev/edit/' + game_id + '/'
+  }
+
+  function deleteGame(game_id){
+    // Takes the user to the editing page
+    window.location = '/dev/delete/' + game_id + '/'
+  }
+</script>
+
+<!-- ### HTML ### -->
+<h2>Pelisi</h2>
+
+<table style="width:100%">
+<tr>
+  <!-- TODO: tyylittely fiksummin, nyt vaan placeholder -->
+  <th style="text-align:left">Peli</th>
+  <th style="text-align:left">Hinta</th>
+  <th style="text-align:left">Pelin ID</th>
+  <th style="text-align:left">URL</th>
+  <th style="text-align:left">Sales</th>
+</tr>
+{% for game in own_games %}
+<tr>
+  <td> <a href="/game/{{game.id}}">{{ game.name }}</a></td>
+  <td> {{ game.price }}</td>
+  <td> {{ game.id }}</td>
+  <td> {{ game.url }}</td>
+  <td> {{ game.sales }}</td>
+  <!-- Edit-napin painallus vie erilliseen muokkausnäkymään -->
+  <td> <button onclick="editGame({{ game.id }})" id="{{ game.id }}"> edit </button> </td>
+  <td> <button onclick="deleteGame({{ game.id }})" id="{{ game.id }}"> delete </button> </td>
+
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+
+
 {% endblock %}
