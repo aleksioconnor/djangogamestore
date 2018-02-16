@@ -31,7 +31,7 @@ def index(request, game_id):
 	else:
 		user_owns_game = False
 
-	context = {'game': current_game, 'high_scores': high_score_list, 'owned': user_owns_game, 'developed': user_developed_game, 'logged_in': request.user.is_authenticated()}
+	context = {'game': current_game, 'high_scores': high_score_list, 'owned': user_owns_game, 'developed': user_developed_game, 'logged_in': request.user.is_authenticated(), 'game_id': game_id}
 	return render(request, 'gameview/index.html', context)
 
 # Defines an 'endpoint' for our ajax POST function in the gameview template.
