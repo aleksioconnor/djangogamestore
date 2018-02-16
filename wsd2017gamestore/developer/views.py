@@ -13,6 +13,15 @@ from common.util import user_is_developer
 # If user is not logged in and tries to access developer page, user is prompted to log in.
 @user_passes_test(user_is_developer, login_url='/auth/login/', redirect_field_name=None)
 def index(request):
+
+    # Own games and edit button
+    own_games = Game.objects.filter(developer_id = request.user.id)
+
+    for game in own_games:
+      single_game_stats = BoughtGames.objects.all().filter(game = game)
+      game.sales = len(single_game_stats)
+
+
     # handling form actions
     if request.method == 'POST':
         form = NewGameForm(request.POST)
@@ -25,18 +34,13 @@ def index(request):
             g = Game(name=name, price=price, url=url, developer_id=dev_id, category=category)
             g.save()
             form = NewGameForm()
+            context = {
+                'form': form,
+                'own_games': own_games,
+            }
     else:
         # Insert the NewGameForm
         form = NewGameForm()
-
-        # Own games and edit button
-        own_games = Game.objects.filter(developer_id = request.user.id)
-        print(own_games)
-
-        for game in own_games:
-          single_game_stats = BoughtGames.objects.all().filter(game = game)
-          game.sales = len(single_game_stats)
-
         context = {
             'form': form,
             'own_games': own_games,
