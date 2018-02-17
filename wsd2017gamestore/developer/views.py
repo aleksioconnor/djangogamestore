@@ -14,10 +14,11 @@ from common.util import user_is_developer
 @user_passes_test(user_is_developer, login_url='/auth/login/', redirect_field_name=None)
 def index(request):
 
-    # Own games and edit button
-    own_games = Game.objects.filter(developer_id = request.user.id)
+    # Own developed games and edit button
+    user_id = request.user.id
+    developed_games = Game.objects.all().filter(developer_id=user_id)
 
-    for game in own_games:
+    for game in developed_games:
       single_game_stats = BoughtGames.objects.all().filter(game = game)
       game.sales = len(single_game_stats)
 
@@ -37,14 +38,14 @@ def index(request):
             form = NewGameForm()
             context = {
                 'form': form,
-                'own_games': own_games,
+                'developed_games': developed_games,
             }
     else:
         # Insert the NewGameForm
         form = NewGameForm()
         context = {
             'form': form,
-            'own_games': own_games,
+            'developed_games': developed_games,
         }
 
 
@@ -68,6 +69,7 @@ def info(request, pk):
 class GameEdit(UpdateView):
         model = Game
         fields = ['name', 'price', 'url', 'description']
+
 
 class GameDelete(DeleteView):
     model = Game
