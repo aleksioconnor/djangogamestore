@@ -51,10 +51,10 @@ td {
 
 .game-image {
   margin-top: 5px;
-  background-image: url('https://vignette.wikia.nocookie.net/fifa/images/d/d4/FIFA18cover.png/revision/latest?cb=20170930173346');
+  background-image: url('../icons/game-pic.png');
   background-size: contain;
   background-repeat: no-repeat;
-  height: 200px;
+  height: 170px;
 }
 .game-price {
     position: absolute;

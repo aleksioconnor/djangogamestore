@@ -30,8 +30,9 @@ def index(request):
             price = form.cleaned_data['game_price']
             url = form.cleaned_data['game_url']
             category = form.cleaned_data['category']
+            desc = form.cleaned_data['game_desc']
             dev_id = request.user.id
-            g = Game(name=name, price=price, url=url, developer_id=dev_id, category=category)
+            g = Game(name=name, price=price, url=url, developer_id=dev_id, category=category, description=desc)
             g.save()
             form = NewGameForm()
             context = {
@@ -66,7 +67,7 @@ def info(request, pk):
 # Takes the template from store/game_form.html TODO: change this
 class GameEdit(UpdateView):
         model = Game
-        fields = ['name', 'price', 'url']
+        fields = ['name', 'price', 'url', 'description']
 
 class GameDelete(DeleteView):
     model = Game

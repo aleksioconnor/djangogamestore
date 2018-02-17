@@ -13,6 +13,7 @@ class Game(models.Model):
     url = models.URLField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     developer_id = models.IntegerField(default=0)
+    description = models.CharField(default="", max_length=1000)
 
 class BoughtGames(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
