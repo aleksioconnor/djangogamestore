@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse, Http404
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 from .forms import NewGameForm
@@ -69,6 +69,19 @@ def info(request, pk):
 class GameEdit(UpdateView):
         model = Game
         fields = ['name', 'price', 'url', 'description']
+
+        # Checking if the user has developed the game and has rights to edit it
+        def get_initial(self):
+            initial = super(GameEdit, self).get_initial()
+            try:
+                user_id = self.request.user.id
+                current_game = self.object
+                length = len(Game.objects.all().filter(name=current_game.name).filter(developer_id=user_id)) > 0
+            except:
+                raise Http404("Page not found")
+            else:
+                if(not length):
+                    raise Http404("You don't have rights to edit this game.")
 
 
 class GameDelete(DeleteView):
