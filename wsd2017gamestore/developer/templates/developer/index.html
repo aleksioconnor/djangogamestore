@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+<h2>Lisää peli</h2>
 <form action="" method="post"> <!-- POST-request the form to /store/ -->
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
+    <table>
+      {{ form.as_table }}
+    </table>
+    <tr><th></th><td><input class="btn btn-success"type="submit" value="Submit" /></td></tr>
 </form>
 
 {% if user.is_authenticated %}
@@ -18,7 +21,8 @@
 </script>
 
 <!-- ### HTML ### -->
-<h2>Pelisi</h2>
+<div class="added_games">
+<h2>Sinun pelisi</h2>
 
 <table style="width:50%">
 <tr>
@@ -43,6 +47,7 @@
 </tr>
 {% endfor %}
 </table>
+</div>
 {% endif %}
 
 

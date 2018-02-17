@@ -5,7 +5,9 @@
 <form action="" method="post">
   {% csrf_token %}
   <p>To delete this game, kindly click the following button.</p>
-  {{ form.as_p }}
+  <table>
+    {{ form.as_table}}
+  </table>
   <input type="submit" value="Submit" />
 </form>
 {% endblock %}
