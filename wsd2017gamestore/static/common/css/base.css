@@ -77,4 +77,10 @@ td {
   border-width: 1px;
   border-style: solid;
   margin-top: 20px;
+  display: flex;
+}
+
+.share-button {
+  display: inline-block;
+  margin: 20px 0;
 }
