@@ -39,6 +39,7 @@ h1, h2, h3, h4 {
 .game-container {
   position: relative;
   width: 200px;
+  margin-bottom: 30px;
 }
 
 .game-container a {
@@ -122,5 +123,13 @@ span.helptext {
   font-weight: 500;
 }
 
+.addgame {
+  margin-bottom: 20px;
+}
+.oddcolors td:first-child {
+  padding: 20px 10px;
+}
+.oddcolors tr:nth-child(odd) {
+    background-color: rgba(48,207,101, 0.2);
 
-/* developer index */
+}

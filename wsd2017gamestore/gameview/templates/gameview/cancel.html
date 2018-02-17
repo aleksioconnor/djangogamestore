@@ -1,9 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
 <h2>Canceled payment</h2>
 
 <p>You canceled the payment for the game {{game.name}}!</p>
 
-<Button onClick="goToGame({{game.id}})">Return to the game</Button>
-<Button onClick="goToStore()">Return to the store</Button>
+<Button class="btn btn-primary" onClick="goToGame({{game.id}})">Return to the game</Button>
+<Button class="btn btn-secondary" onClick="goToStore()">Return to the store</Button>
 
 <script>
   function goToGame(game_id){
@@ -16,3 +19,4 @@
     window.location = '/store/'
   }
 </script>
+{% endblock %}

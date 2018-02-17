@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <div id="form">
 	<h3>Buy game</h3>
 	<form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
@@ -14,9 +16,10 @@
 	    <input type="hidden" id="id_amount" name="amount" value={{amount}} />
 			<p>Confirm payment<p>
 			<ul>
-				<li>Game: {{game.name}}</li>
-				<li>Price: {{amount}}€</li>
+				<li><b>Game:</b> {{game.name}}</li>
+				<li><b>Price:</b> {{amount}}€</li>
 			</ul>
-	    <input type="submit" value="Accept Payment"/>
+	    <input class="btn btn-primary" type="submit" value="Accept Payment"/>
 	</form>
 </div>
+{% endblock %}

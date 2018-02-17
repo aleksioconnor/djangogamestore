@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="addgame col-sm-4">
 <h2>Lisää peli</h2>
 <form action="" method="post"> <!-- POST-request the form to /store/ -->
     {% csrf_token %}
@@ -8,7 +9,7 @@
     </table>
     <tr><th></th><td><input class="btn btn-success"type="submit" value="Submit" /></td></tr>
 </form>
-
+</div>
 {% if user.is_authenticated %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <!-- ### JAVASCRIPT ### -->
@@ -21,28 +22,19 @@
 </script>
 
 <!-- ### HTML ### -->
-<div class="added_games">
+<div class="oddcolors col-sm-6">
 <h2>Sinun pelisi</h2>
 
-<table style="width:50%">
-<tr>
-  <!-- TODO: tyylittely fiksummin, nyt vaan placeholder -->
-  <th style="text-align:left">Peli</th>
-  <th style="text-align:left">Hinta</th>
-  <th style="text-align:left">Url</th>
-
-</tr>
+<table style="width:100%">
 {% for game in developed_games %}
-<tr class="juujaa">
-  <td> <a href="/game/{{game.id}}">{{ game.name }}</a></td>
-  <td> {{ game.price }}</td>
-  <td> {{ game.url }}</td>
+<tr>
+  <td>{{ game.name }}</td>
   <!-- Infonäkymä -->
-  <td> <button onclick="redirect({{ game.id }}, 'info')" id="{{ game.id }}"> stats </button> </td>
+  <td> <button class="btn btn-primary" onclick="redirect({{ game.id }}, 'info')" id="{{ game.id }}"> info </button> </td>
   <!-- Muutosnäkymä -->
-  <td> <button onclick="redirect({{ game.id }}, 'edit')" id="{{ game.id }}"> edit </button> </td>
+  <td> <button class="btn btn-warning" onclick="redirect({{ game.id }}, 'edit')" id="{{ game.id }}"> edit </button> </td>
   <!-- Poistonäkymä -->
-  <td> <button onclick="redirect({{ game.id }}, 'delete')" id="{{ game.id }}"> delete </button> </td>
+  <td> <button class="btn btn-danger" onclick="redirect({{ game.id }}, 'delete')" id="{{ game.id }}"> delete </button> </td>
 
 </tr>
 {% endfor %}
