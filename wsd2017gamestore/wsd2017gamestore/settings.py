@@ -143,7 +143,7 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 # Login redirect
-LOGIN_REDIRECT_URL = '/store/'
+LOGIN_REDIRECT_URL = '/'
 
 # The URL where requests are redirected for login, especially when using the login_required() decorator.
 

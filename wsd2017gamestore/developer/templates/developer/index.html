@@ -2,7 +2,7 @@
 {% block content %}
 <div class="marginbottom col-sm-4">
 <h2>Add a new game</h2>
-<form action="" method="post"> <!-- POST-request the form to /store/ -->
+<form action="" method="post"> <!-- POST-request the form to / -->
     {% csrf_token %}
     <table>
       {{ form.as_table }}

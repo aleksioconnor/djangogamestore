@@ -66,7 +66,7 @@ def signup(request):
             user.groups.add(group)
 
             # Redirect user to 'front page'
-            return redirect('/store/')
+            return redirect('/')
 
     else:
         # Imported from forms.py
