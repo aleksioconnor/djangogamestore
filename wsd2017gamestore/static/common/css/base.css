@@ -2,8 +2,7 @@ html, body {
   height: 100%;
   width: 100%;
   margin: 0;
-  box-sizing: border-box;
-  border-collapse: collapse;
+  box-sizing: content-box;
 }
 
 .root {
@@ -14,6 +13,18 @@ h1, h2, h3, h4 {
   margin: 0;
 }
 
+h2 {
+  font-weight: 900 !important;
+}
+
+h4 {
+  font-weight: 200 !important;
+}
+
+
+.marginbottom {
+  margin-bottom: 40px;
+}
 /* from here on sort these to their individiual css files */
 
 .green {
@@ -31,8 +42,8 @@ h1, h2, h3, h4 {
   width: 100%;
   min-height: 200px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-flow:wrap row;
+  justify-content: flex-start;
   margin-top: 20px;
 }
 
@@ -40,6 +51,7 @@ h1, h2, h3, h4 {
   position: relative;
   width: 200px;
   margin-bottom: 30px;
+  margin-right: 20px;
 }
 
 .game-container a {

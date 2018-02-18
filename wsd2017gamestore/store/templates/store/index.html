@@ -4,8 +4,8 @@
 <div class='root'>
   <div class='green'></div>
   {% if user.is_authenticated %}
-  <h3>Your games</h3>
-  <div class='games-list row'>
+  <h2>Your games</h2>
+  <div class='games-list'>
     {% for owned_game in owned_games %}
     <div class='game-container'>
       <div class='game-price'>{{ owned_game.price}} €</div>
@@ -19,10 +19,10 @@
   {% endif %}
 
 
-  <h3>All games</h3>
+  <h2>All games</h2>
   {% for category in categories %}
     <h4>{{ category.name }}</h4>
-      <div class='games-list row'>
+      <div class='games-list'>
       {% for game in games %}
         {% if game.category == category %}
           <div class='game-container'>

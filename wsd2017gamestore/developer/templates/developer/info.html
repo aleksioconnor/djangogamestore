@@ -6,35 +6,38 @@
 
 <!-- ### HTML ### -->
 {% with single_game_stats|first as game %}
-  <h2>Pelin {{game.game.name}} tilastot</h2>
+  <h2>Info for {{game.game.name}}</h2>
+  <div class="marginbottom">
   <table style="width:50%;">
     <tr>
-      <th>Pelin hinta</th>
+      <th>Price</th>
       <th>Url</th>
-      <th>Myyty</th>
+      <th>Items sold</th>
     </tr>
     <tr>
-      <td>{{game.game.price}} euroa</td>
+      <td>{{game.game.price}} eur</td>
       <td><a href="{{game.game.url}}">{{game.game.url}}</a></td>
       <td>{{sold_items}} kpl</td>
     </tr>
-  <table>
+  </table>
+</div>
 {% endwith %}
-
-<h3>Myyntitilastot</h3>
-<table style="width:50%">
-<tr>
-  <!-- TODO: tyylittely fiksummin, nyt vaan placeholder -->
-  <th style="text-align:left">Ostaja</th>
-  <th style="text-align:left">Ostoaika</th>
-</tr>
-{% for sale in single_game_stats %}
-<tr>
-  <td> {{ sale.user }}</td>
-  <td> {{ sale.time }}</td>
-</tr>
-{% endfor%}
-</table>
+<div class="marginbottom">
+  <h3>Sales statistics</h3>
+  <table style="width:50%">
+  <tr>
+    <!-- TODO: tyylittely fiksummin, nyt vaan placeholder -->
+    <th style="text-align:left">Ostaja</th>
+    <th style="text-align:left">Ostoaika</th>
+  </tr>
+  {% for sale in single_game_stats %}
+  <tr>
+    <td> {{ sale.user }}</td>
+    <td> {{ sale.time }}</td>
+  </tr>
+  {% endfor%}
+  </table>
+</div>
 
 {% endif %}
 {% endblock %}

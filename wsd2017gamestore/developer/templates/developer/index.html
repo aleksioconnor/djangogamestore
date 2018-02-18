@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="addgame col-sm-4">
-<h2>Lisää peli</h2>
+<div class="marginbottom col-sm-4">
+<h2>Add a new game</h2>
 <form action="" method="post"> <!-- POST-request the form to /store/ -->
     {% csrf_token %}
     <table>
@@ -23,7 +23,7 @@
 
 <!-- ### HTML ### -->
 <div class="oddcolors col-sm-6">
-<h2>Sinun pelisi</h2>
+<h2>Your games</h2>
 
 <table style="width:100%">
 {% for game in developed_games %}
