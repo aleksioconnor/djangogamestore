@@ -24,8 +24,8 @@
       <iframe src="{{ game.url }}" id="gameframe" frameborder="0"></iframe>
 
       <!-- Share button code -->
-      <div class="share-button" data-href="http://wsd2017gamestore.herokuapp.com/game/{{game_id}}/"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwsd2017gamestore.herokuapp.com%2Fgame%2F{{game_id}}%2F&amp;src=sdkpreparse"><img width="30px" src="../../static/common/icons/facebook.png" /></a></div>
-      <div class="share-button"><a target="_blank" href="https://twitter.com/intent/tweet?text=Check%20this%20game%20out&url=https://wsd2017gamestore.herokuapp.com/game/{{game_id}}/"><img src="../../static/common/icons/twitter.png" width="30px" /></a></div>
+      <div class="share-button" data-href="http://wsd2017gamestore.herokuapp.com/game/{{game_id}}/"><a target="_blank" title="Share this game on Facebook" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwsd2017gamestore.herokuapp.com%2Fgame%2F{{game_id}}%2F&amp;src=sdkpreparse"><img width="30px" src="../../static/common/icons/facebook.png" /></a></div>
+      <div class="share-button"><a target="_blank" title="Share this game on Twitter" href="https://twitter.com/intent/tweet?text=Check%20this%20game%20out&url=https://wsd2017gamestore.herokuapp.com/game/{{game_id}}/"><img src="../../static/common/icons/twitter.png" width="30px" /></a></div>
   {% elif not logged_in %}
       <br>
       <div class='info-modal'>
