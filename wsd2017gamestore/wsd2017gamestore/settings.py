@@ -35,7 +35,7 @@ STATICFILES_DIRS = [
 SECRET_KEY = 'u8%crus(o8$-!=09d_so+gs)ces42mv&m(=hsonzv7w@6$xph2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['wsd2017gamestore.herokuapp.com','127.0.0.1','localhost']
 
