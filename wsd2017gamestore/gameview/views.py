@@ -30,6 +30,7 @@ def index(request, game_id):
 		user_developed_game = len(Game.objects.all().filter(name=current_game.name).filter(developer_id=user_id)) > 0
 	else:
 		user_owns_game = False
+		user_developed_game = False
 
 	context = {'game': current_game, 'high_scores': high_score_list, 'owned': user_owns_game, 'developed': user_developed_game, 'logged_in': request.user.is_authenticated(), 'game_id': game_id}
 	return render(request, 'gameview/index.html', context)
@@ -160,16 +161,16 @@ def successful_payment(request, game_id):
 	game = Game.objects.get(id=game_id)
 	current_user = request.user
 
+	context = {
+		'game': game,
+	}
+
 	if request.user.is_authenticated():
 		if url_checksum == checksum and str(current_user.id) == buyer_id:
 
 			user = User.objects.get(id=current_user.id) # Is this equal to current_user?
 			bought_game = BoughtGames(game = game, user = user)
 			bought_game.save()
-
-			context = {
-				'game': game,
-			}
 
 			return render(request, 'gameview/success.html', context)
 		else:
