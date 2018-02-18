@@ -27,7 +27,7 @@ def signup(request):
             user_typ = form.cleaned_data.get('user_type')
             email = form.cleaned_data.get('email')
 
-            #Create a random key to the activation_url
+            # Create a random key to the activation_url
             key = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(25))
 
             # Authenticate verifies a set of credentials.
@@ -35,7 +35,6 @@ def signup(request):
             # checks them against the authentication backend.
             # Returns a User object if the credentials are
             # valid. If authentication fails, returns None.
-            # Should be clarified why this works in registration - couldn't find why in django docs
             user = authenticate(username=username, password=raw_password)
             this_user = Profile.objects.create(user=user, activation_key=key, user_type = user_typ, is_activated = False)
             user.save()
