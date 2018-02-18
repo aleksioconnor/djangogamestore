@@ -8,9 +8,9 @@
   <div class='games-list'>
     {% for owned_game in owned_games %}
     <div class='game-container'>
+      <span class="multiline"> <a href='/game/{{owned_game.id}}'>{{ owned_game.name }} </></span>
       <div class='game-price'>{{ owned_game.price}} €</div>
-
-      <a href='/game/{{owned_game.id}}'>{{ owned_game.name }}
+      <a href='/game/{{owned_game.id}}'>
         <div class='game-image'></div>
       </a>
     </div>
@@ -26,8 +26,9 @@
       {% for game in games %}
         {% if game.category == category %}
           <div class='game-container'>
-            <div class='game-price'>{{ game.price }} €</div>
-            <a href='/game/{{game.id}}'>{{ game.name }}
+            <a class="multiline" href='/game/{{game.id}}'>{{ game.name }} </a>
+            <div class='game-price'>{{ game.price}} €</div>
+            <a href='/game/{{game.id}}'>
               <div class='game-image'></div>
             </a>
           </div> <!-- game-container -->
