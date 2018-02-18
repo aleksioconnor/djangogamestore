@@ -58,7 +58,7 @@ def info(request, pk):
     single_game_stats = BoughtGames.objects.all().filter(game = this_game)
     sold_items = len(single_game_stats)
 
-    context = { 'game': this_game, 'single_game_stats': single_game_stats, 'sold_items': sold_items }
+    context = { 'this_game': this_game, 'single_game_stats': single_game_stats, 'sold_items': sold_items }
 
     return render(request, 'developer/info.html', context)
 
