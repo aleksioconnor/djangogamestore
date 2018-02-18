@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% if user.profile.is_activated %}
 <div class="marginbottom col-sm-4">
 <h2>Add a new game</h2>
 <form action="" method="post"> <!-- POST-request the form to / -->
@@ -41,6 +42,7 @@
 </table>
 </div>
 {% endif %}
-
-
+{% else %}
+<h3>Please activate your email to continue.</h3>
+{% endif %}
 {% endblock %}
