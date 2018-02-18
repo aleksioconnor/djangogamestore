@@ -2,11 +2,11 @@
 
 // Adds event listener to window, which will monitor any incoming messages
 // from the iFrame
-window.addEventListener('message', function (message) {
+window.addEventListener("message", function (message) {
   switch (message.data.messageType) {
     // If message type is score, save high score
     case "SCORE":
-      saveHighScore(message.data.score)
+      saveHighScore(message.data.score);
       break;
 
     // If message type is save, save game state
@@ -21,10 +21,10 @@ window.addEventListener('message', function (message) {
 
     // change the size of the iframe according to options received from iFrame
     case "SETTING":
-      var gameframe = $('#gameframe')
-      gameframe.css('height', message.data.options.height + 'px');
-      gameframe.css('width', message.data.options.width + 'px');
-      gameframe.css('background-color', 'white');
+      var gameframe = $("#gameframe");
+      gameframe.css("height", message.data.options.height + "px");
+      gameframe.css("width", message.data.options.width + "px");
+      gameframe.css("background-color", "white");
       break;
   }
 });
@@ -41,7 +41,7 @@ window.addEventListener('message', function (message) {
  */
 
   function saveGameState(state) {
-    var messageAsString = JSON.stringify(state)
+    var messageAsString = JSON.stringify(state);
     $.ajax({
       type: "POST",
       data: {
@@ -53,10 +53,10 @@ window.addEventListener('message', function (message) {
         checkForSaves();
       },
       error: function (err) {
-        var iframe = $('#gameframe')[0];
+        var iframe = $("#gameframe")[0];
         var message = {};
         message.messageType = "ERROR";
-        message.info = "Something went wrong with saving the game."
+        message.info = "Something went wrong with saving the game.";
         iframe.contentWindow.postMessage(message, "*");
       }
     });
@@ -70,7 +70,6 @@ window.addEventListener('message', function (message) {
  * On error, sends the iframe a message.
  */
   function saveHighScore(score) {
-    console.log(score)
     $.ajax({
       type: "POST",
       data: {
@@ -82,10 +81,10 @@ window.addEventListener('message', function (message) {
         getHighScores()
       },
       error: function (error) {
-        var iframe = $('#gameframe')[0];
+        var iframe = $("#gameframe")[0];
         var message = {};
         message.messageType = "ERROR";
-        message.info = "Something went wrong with submitting the high score."
+        message.info = "Something went wrong with submitting the high score.";
         iframe.contentWindow.postMessage(message, "*");
       }
     })
@@ -102,14 +101,14 @@ window.addEventListener('message', function (message) {
       url: "load/",
       success: function (result) {
         var gameState = (JSON.parse(result[0].data));
-        var iframe = $('#gameframe')[0]
+        var iframe = $("#gameframe")[0]
         var message = {};
         message.messageType = "LOAD";
         message.gameState = gameState;
         iframe.contentWindow.postMessage(message, "*");
         },
       error: function(result) {
-        var iframe = $('#gameframe')[0]
+        var iframe = $("#gameframe")[0]
         var message = {};
         message.messageType = "ERROR";
         message.info = "No saved games found";

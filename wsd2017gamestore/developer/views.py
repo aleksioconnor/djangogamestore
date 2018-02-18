@@ -75,23 +75,32 @@ def info(request, pk):
 
 # Takes the template from store/game_form.html TODO: change this
 class GameEdit(UpdateView):
-        model = Game
-        fields = ['name', 'price', 'url', 'description']
+    model = Game
+    fields = ['name', 'price', 'url', 'description']
 
-        # Checking if the user has developed the game and has rights to edit it
-        def get_initial(self):
-            initial = super(GameEdit, self).get_initial()
-            try:
-                user_id = self.request.user.id
-                current_game = self.object
-                length = len(Game.objects.all().filter(name=current_game.name).filter(developer_id=user_id)) > 0
-            except:
-                raise Http404("Page not found or you are not logged in.")
-            else:
-                if(not length):
-                    return HttpResponseRedirect('/dev')
+    # Checking if the user has developed the game and has rights to edit it
+    def get_initial(self):
+        initial = super(GameEdit, self).get_initial()
+        try:
+            user_id = self.request.user.id
+            current_game = self.object
+            length = len(Game.objects.all().filter(name=current_game.name).filter(developer_id=user_id)) > 0
+        except:
+            raise Http404("Page not found or you are not logged in")
+        else:
+            if(not length):
+                raise Http404("You don't have rights to edit this game.")
 
 
 class GameDelete(DeleteView):
-        model = Game
-        success_url = reverse_lazy('index')
+    model = Game
+    # Overrides the delete method from the mixin
+    def delete(self, request, *args, **kwargs):
+      self.object = self.get_object()
+      user_id = self.request.user.id
+      current_game = self.object
+      length = len(Game.objects.all().filter(name=current_game.name).filter(developer_id=user_id)) > 0
+      if length:
+        return super(GameDelete, self).delete(request, *args, **kwargs)
+      else:
+        raise Http404("You can't delete this game")

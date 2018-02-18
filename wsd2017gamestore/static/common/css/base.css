@@ -61,6 +61,20 @@ h4 {
   font-size: 15px;
 }
 
+.multiline {
+  display: inline-block;
+  max-width: 175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top
+}
+
+.multiline:hover {
+  overflow: visible;
+  white-space: normal;
+}
+
 .game-image {
   margin-top: 5px;
   background-image: url('../icons/game-pic.png');
@@ -70,15 +84,14 @@ h4 {
 }
 .game-price {
     position: absolute;
-    right: 15px;
-    top: 10px;
+    right: 0px;
     background-color: #ff3860;
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
     text-align: center;
     font-size: 15px;
-    line-height: 50px; /* match this with height */
+    line-height: 70px; /* match this with height */
     color: white;
 }
 
