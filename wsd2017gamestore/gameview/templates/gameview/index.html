@@ -31,18 +31,19 @@
   {% elif not logged_in %}
       <br>
       <div class='info-modal'>
-          <a type="button" href="/auth/login/">Log in</a> in order to buy or play this game.
+          <a class="btn btn-primary" role="button" href="/auth/login/">Log in</a> in order to buy or play this game.
       </div>
 
   {% else %}
       <br>
       <div class='info-modal'>
-          Please 	<a type="button" href="payment/">buy this game</a> to play it.
+          Please 	<a class="btn btn-primary" role="button" href="payment/">buy this game</a> to play it.
       </div>
   {% endif %}
 
       {% if logged_in and owned or logged_in and developed  %}
-        <div id="scores">
+        <h4>Highscores</h4>
+        <div id="scores"></div>
         <div id="loadgame"></div>
       {% endif %}
 
