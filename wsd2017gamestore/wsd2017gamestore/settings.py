@@ -35,7 +35,7 @@ STATICFILES_DIRS = [
 SECRET_KEY = 'u8%crus(o8$-!=09d_so+gs)ces42mv&m(=hsonzv7w@6$xph2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['wsd2017gamestore.herokuapp.com','127.0.0.1','localhost']
 
@@ -143,7 +143,7 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 # Login redirect
-LOGIN_REDIRECT_URL = '/store/'
+LOGIN_REDIRECT_URL = '/'
 
 # The URL where requests are redirected for login, especially when using the login_required() decorator.
 

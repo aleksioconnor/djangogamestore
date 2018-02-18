@@ -142,7 +142,7 @@ def buy_game(request, game_id):
 		return render(request, 'gameview/payment.html', context)
 	# If user owns game, redirect to home page.
 	else:
-		return redirect('/store/')
+		return redirect('/')
 
 # Handles what happens after payment is received
 @login_required

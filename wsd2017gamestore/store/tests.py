@@ -45,18 +45,17 @@ class GameTestCase(TestCase):
 
   # Front page gets rendered
   def test_front_page_view(self):
-    found = resolve('/store/')
+    found = resolve('/')
     self.assertEqual(found.func, index)
 
   # Issue a GET request to front page
   def test_front_page_response(self):
-    response = self.client.get('/store/')
+    response = self.client.get('/')
     self.assertEqual(response.status_code, 200)
 
   # Check all games are passed to game view
   def test_front_page_context(self):
-    response = self.client.get('/store/')
+    response = self.client.get('/')
     context = response.context
     games = context['games']
     self.assertEqual(len(games), 3)
-
