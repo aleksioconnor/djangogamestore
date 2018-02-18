@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse, Http404
+from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 from .forms import NewGameForm
@@ -36,18 +36,15 @@ def index(request):
             g = Game(name=name, price=price, url=url, developer_id=dev_id, category=category, description=desc)
             g.save()
             form = NewGameForm()
-            context = {
-                'form': form,
-                'developed_games': developed_games,
-            }
+            return HttpResponseRedirect('/dev')
     else:
         # Insert the NewGameForm
         form = NewGameForm()
-        context = {
-            'form': form,
-            'developed_games': developed_games,
-        }
 
+    context = {
+        'form': form,
+        'developed_games': developed_games,
+    }
 
     return render(request, 'developer/index.html', context)
 
