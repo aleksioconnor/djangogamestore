@@ -68,7 +68,11 @@ MIDDLEWARE = [
 ]
 
 # Using console.EmailBackend for now, if time allows TODO: change to a real email
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'wsd2017gamestore@gmail.com'
+EMAIL_HOST_PASSWORD = 'JooJoo123'
+EMAIL_PORT = 587
 
 ROOT_URLCONF = 'wsd2017gamestore.urls'
 
