@@ -49,18 +49,29 @@ def index(request):
     return render(request, 'developer/index.html', context)
 
 def info(request, pk):
-    #get game_id from path
+    #get game_id from path and current game
     path = request.META['PATH_INFO']
     game_id = path[10:-1]
-
-    #get current game and its stats
     this_game = Game.objects.filter(id = game_id)
-    single_game_stats = BoughtGames.objects.all().filter(game = this_game)
-    sold_items = len(single_game_stats)
 
-    context = { 'this_game': this_game, 'single_game_stats': single_game_stats, 'sold_items': sold_items }
+    try:
+        user_id = request.user.id
+        # checks if user has developed current game
+        user_is_developer = len(this_game.filter(developer_id=user_id)) > 0
+    except:
+        raise Http404("Page not found.")
+    else:
+        if(not user_is_developer):
+            # redirect to dev-page
+            return HttpResponseRedirect('/dev')
+        else:
+            #get current game's stats
+            single_game_stats = BoughtGames.objects.all().filter(game = this_game)
+            sold_items = len(single_game_stats)
 
-    return render(request, 'developer/info.html', context)
+            context = { 'this_game': this_game, 'single_game_stats': single_game_stats, 'sold_items': sold_items }
+
+            return render(request, 'developer/info.html', context)
 
 # Takes the template from store/game_form.html TODO: change this
 class GameEdit(UpdateView):
@@ -75,12 +86,12 @@ class GameEdit(UpdateView):
                 current_game = self.object
                 length = len(Game.objects.all().filter(name=current_game.name).filter(developer_id=user_id)) > 0
             except:
-                raise Http404("Page not found")
+                raise Http404("Page not found or you are not logged in.")
             else:
                 if(not length):
-                    raise Http404("You don't have rights to edit this game.")
+                    return HttpResponseRedirect('/dev')
 
 
 class GameDelete(DeleteView):
-    model = Game
-    success_url = reverse_lazy('index')
+        model = Game
+        success_url = reverse_lazy('index')
