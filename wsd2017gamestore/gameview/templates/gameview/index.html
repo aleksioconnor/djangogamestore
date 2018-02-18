@@ -10,7 +10,8 @@
 {% block meta %}
 <meta property="og:title"         content="AKA Gamestore - {{game.name}}" />
 <meta property="og:description"   content="{{game.description}}" />
-<meta property="og:image"         content="https://www.your-domain.com/path/image.jpg" />
+<meta property="og:image"         content="https://wsd2017gamestore.herokuapp.com/static/common/icons/game-pic.png" />
+<meta property="og:url"           content="https://wsd2017gamestore.herokuapp.com/game/{{game.id}}/" />
 {% endblock %}
 
 {% block content %}
