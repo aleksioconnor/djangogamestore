@@ -69,3 +69,12 @@ h4 {
 .info {
   margin-bottom: 80px;
 }
+
+.multiline {
+  display: inline-block;
+  max-width: 175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top
+}

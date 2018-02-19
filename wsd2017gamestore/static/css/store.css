@@ -22,15 +22,6 @@
   font-size: 15px;
 }
 
-.multiline {
-  display: inline-block;
-  max-width: 175px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  vertical-align: top
-}
-
 .multiline:hover {
   overflow: visible;
   white-space: normal;
