@@ -52,7 +52,6 @@ Our application works well with both traditional computers and mobile devices. S
 #### Social media sharing
 Games can be shared in two social media sites - Facebook and Twitter. Metadata is added correctly, so when sharing, game name, description an image are shown and the game can be accessed with the (correct) link.
 
-
 ### Dividing work between team members
 During this project we did not want to give the members of team one big specific part that they would handle alone – we all wanted to learn and understand all parts of the project. We met up every Tuesday and went through the things we would need to do each week - these tasks were given to different members of the team and some tasks were also completed in pairs. The first week we worked mainly together from Aleksi’s computer since starting the project could be done best using only one computer. Working in pairs allowed us to discuss the current tasks more and understand more deeply what is the current problem and what is the best solution to it – it also makes it a bit more difficult to define who did what. A good example of a task given to a member could have been “add the iframe-functionality to gameview and handle the different messages received from it” or “add the payment functionality to the gameview so users can buy games”. The tasks were divided evenly between team members each week and all in all everyone completed approximately the same amount of work for the project.
 
@@ -79,6 +78,7 @@ During this project we did not want to give the members of team one big specific
 * Styling (navigation and some random parts)
 * Defining models and templates
 * Testing
+* Documenting the project
 
 #### Alan
 * Developer functionality
@@ -100,6 +100,20 @@ A developer can add a game using the developer view, which can be accessed from 
 
 A user can log out using the logout-button on the far right of the navbar.
 
+### Running the project locally
+If you want to run the project locally
+1. Clone the project from GitLab using SSH: ```git@version.aalto.fi:pirdila1/wsd2017-gamestore.git```
+2. Activate Python environment using command ```~/djangoenv/bin/activate```
+3. Run command ```pip install -r requirements.txt```
+4. Migrate using command ```python manage.py migrate```
+5. Collect static using command ```python manage.py collectstatic```
+6. To add game categories and user-types to the gamestore
+  1. Open python shell using command ```python manage.py shell```
+  2. Import Category-model ```from store.models import Category```
+  3. add wanted categories ```Category.objects.create(name='CATEGORY-NAME')```
+7. Open the gamestore locally using command ```python manage.py runserver```
+
+When adding new users to the gamestore, the the link in the email must be changed from https -> http, since Heroku is using a secure connection, but localhost is not.
 
 ## Project Plan
 ### Goal

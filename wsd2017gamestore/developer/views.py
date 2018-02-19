@@ -11,7 +11,7 @@ from django import template
 from common.util import user_is_developer
 
 # If user is not logged in and tries to access developer page, user is prompted to log in.
-@user_passes_test(user_is_developer, login_url='/auth/login/', redirect_field_name=None)
+@user_passes_test(user_is_developer, login_url='/', redirect_field_name=None)
 def index(request):
 
     # Own developed games and edit button
@@ -63,7 +63,7 @@ def info(request, pk):
     else:
         if(not user_is_developer):
             # redirect to dev-page
-            return HttpResponseRedirect('/dev')
+            raise Http404("You don't have the rights to view this games' statistics.")
         else:
             #get current game's stats
             single_game_stats = BoughtGames.objects.all().filter(game = this_game)
