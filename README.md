@@ -100,6 +100,20 @@ A developer can add a game using the developer view, which can be accessed from 
 
 A user can log out using the logout-button on the far right of the navbar.
 
+### Running the project locally
+If you want to run the project locally
+1. Clone the project from GitLab using SSH: ```git@version.aalto.fi:pirdila1/wsd2017-gamestore.git```
+2. Activate Python environment using command ```~/djangoenv/bin/activate```
+3. Run command ```pip install -r requirements.txt```
+4. Migrate using command ```python manage.py migrate```
+5. Collect static using command ```python manage.py collectstatic```
+6. To add game categories to the gamestore
+  1. open python shell using command ```python manage.py shell```
+  2. then import Category-model ```from store.models import Category``` and
+  3. add wanted categories ```Category.objects.create(name='CATEGORY-NAME')```
+7. Open the gamestore locally using command ```python manage.py runserver```
+
+When adding new users to the gamestore, the the link in the email must be changed from https -> http, since Heroku is using a secure connection, but localhost is not.
 
 ## Project Plan
 ### Goal
