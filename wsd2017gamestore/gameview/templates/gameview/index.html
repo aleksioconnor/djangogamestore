@@ -16,8 +16,10 @@
 {% endblock %}
 
 {% block content %}
-
-  <h2>Game name: {{game.name}}</h2>
+  <h2 class="inline-block">{{game.name}}</h2>
+  {% if not owned and not developed %}
+  <p class="game-price inline-block">{{game.price}}€</p>
+  {% endif %}
   <p>{{game.description}}</p>
   <div id="frame_div"></div>
   <div id="message"></div>
@@ -35,9 +37,8 @@
       </div>
 
   {% else %}
-      <br>
       <div class='info-modal'>
-          Please 	<a class="btn btn-primary" role="button" href="payment/">buy this game</a> to play it.
+          Please 	<a class="btn btn-primary" role="button" href="payment/">buy</a> this game to play it.
       </div>
   {% endif %}
 

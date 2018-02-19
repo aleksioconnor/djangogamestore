@@ -9,15 +9,17 @@ html, body {
   margin-top: 20px;
 }
 
-h1, h2, h3, h4 {
+h1, h3 {
   margin: 0;
 }
 
 h2 {
+  margin: 0;
   font-weight: 900 !important;
 }
 
 h4 {
+  margin: 0;
   font-weight: 200 !important;
 }
 
@@ -29,70 +31,13 @@ h4 {
 
 .green {
     position: absolute;
-    top: 0px;
+    top: 0;
     left: 0;
     right: 0;
     height: 330px;
     background-color: #21d160;
     z-index: -1;
     clip-path: polygon(0 0, 100% 0, 100% 65%, 0 100%);
-}
-
-.games-list {
-  width: 100%;
-  min-height: 200px;
-  display: flex;
-  flex-flow:wrap row;
-  justify-content: flex-start;
-  margin-top: 20px;
-}
-
-.game-container {
-  position: relative;
-  width: 200px;
-  margin-bottom: 30px;
-  margin-right: 20px;
-}
-
-.game-container a {
-  text-decoration: none;
-  color: black;
-  font-weight: 700;
-  font-size: 15px;
-}
-
-.multiline {
-  display: inline-block;
-  max-width: 175px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  vertical-align: top
-}
-
-.multiline:hover {
-  overflow: visible;
-  white-space: normal;
-}
-
-.game-image {
-  margin-top: 5px;
-  background-image: url('../icons/game-pic.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 170px;
-}
-.game-price {
-    position: absolute;
-    right: 0px;
-    background-color: #ff3860;
-    width: 70px;
-    height: 70px;
-    border-radius: 70px;
-    text-align: center;
-    font-size: 15px;
-    line-height: 70px; /* match this with height */
-    color: white;
 }
 
 /* These should be in gameview.css */
@@ -140,7 +85,7 @@ form td {
   padding-bottom: 1em;
 }
 
-span.helptext {
+.helptext {
   margin-top: 1em;
   display: block;
   color: #2F3138;
@@ -157,4 +102,69 @@ span.helptext {
 .oddcolors tr:nth-child(odd) {
     background-color: rgba(48,207,101, 0.2);
 
+}
+
+.games-list {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  flex-flow:wrap row;
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+
+.game-container {
+  position: relative;
+  width: 200px;
+  margin-bottom: 30px;
+  margin-right: 20px;
+}
+
+.game-container a {
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.multiline {
+  display: inline-block;
+  max-width: 175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top
+}
+
+.multiline:hover {
+  overflow: visible;
+  white-space: normal;
+}
+
+.game-image {
+  margin-top: 5px;
+  background-image: url('../icons/game-pic.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 170px;
+}
+.game-price {
+    background-color: #ff3860;
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 70px; /* match this with height */
+    color: white;
+}
+
+.right-align {
+  position: absolute;
+  right: 0;
+}
+
+.inline-block {
+  display: inline-block;
+  margin-right: 20px;
 }
