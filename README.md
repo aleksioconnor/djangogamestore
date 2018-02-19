@@ -78,6 +78,7 @@ During this project we did not want to give the members of team one big specific
 * Styling (navigation and some random parts)
 * Defining models and templates
 * Testing
+* Documenting the project
 
 #### Alan
 * Developer functionality
@@ -109,7 +110,6 @@ If you want to run the project locally
 6. To add game categories and user-types to the gamestore
   1. Open python shell using command ```python manage.py shell```
   2. Import Category-model ```from store.models import Category```
-  3. Import Category-model ```from store.models import Category```
   3. add wanted categories ```Category.objects.create(name='CATEGORY-NAME')```
 7. Open the gamestore locally using command ```python manage.py runserver```
 
