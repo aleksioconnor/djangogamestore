@@ -8,33 +8,33 @@
 ## Final Submission
 
 ### Functional Requirements
-Below all described all the functional requirements we have implemented.
+Below are described all the functional requirements we have implemented.
 
 #### Minimum functional requirements
-User can register as either a player or developer. Players can buy games and then play them, see high scores and record their scores to the high score listing.
-Developers can add games for everyone to buy and play, see game purchase statistics, edit and delete games.
+User can register as either a player or a developer. Players can buy games and then play them, see game high scores and record their scores to the high score listing.
+Developers can add games for everyone to buy and play, see game sale statistics, edit and delete games.
 
 #### Authentication
 Registering, logging in and logging out works for both developers and players. These are implemented using Django Auth. Email verification also works and actually sends a proper email to the user with a verification link. The verification has to be done in order for the user to be able to buy or add games.
 
 #### Basic player functionalities
-Games can be bought using the course's mockup payment service. After purchase, the games can be played and the game/service works as wanted (game-state can be saved and loaded, high score is received, frame-size is received from the settings).
+Games can be bought using the course's mockup payment service - success, error and cancel -cases work. After purchase, the games can be played and the game/service works as wanted (game-state can be saved and loaded, high score is received, frame-size is received from the settings).
 User can only play a game that is bought (or self-developed) and if the user is logged in.
-Games are in specific categories and own games are listed in the beginning of the front page.
+Games are listed in specific categories in the front page and own (bought or developed) games are listed in the beginning of the front page.
 
 #### Basic developer functionalities
 A (logged in) developer can add a new game (name, price, url, description). Own (and only own!) developed games can be edited or deleted and the game sale statistics (when the game has been bought) can be seen.
 
 #### Game/service interaction
-When a player finishes playing a game (or presses submit score), the postMessage is sent as wanted. Messages from service to the game is implemented as well.
-The game highscores are served via RESTful API. The gameview shows 5 highest scores made by anyone that has played the game.
+When a player finishes playing a game (or presses 'submit score'), the message is sent as wanted. Messages from service to the game are implemented as well.
+The game high scores are served via RESTful API. The gameview shows 5 highest scores made by anyone that has played the game.
 
 #### Quality of Work
 The application is structured in a meaningful way and functions are commented properly. DRY-principle is followed and Model-View-Template separation is used.
-Meaningful tests are created to make sure that the application works as wanted and required.
+Meaningful tests are created to make sure that the application works as wanted and is required.
 
 #### Non-functional requirements
-Project plan was created in the beginning of the project and can be found below.
+Project plan was created in the beginning of the project and can be found in the below section.
 Documentation is done according to the instructions and requirements.
 
 #### Save/load and resolution feature
@@ -44,13 +44,13 @@ The service of our gamestore supports saving and loading for games with the simp
 RESTful API is used to serve game highscores.
 
 #### Own game
-Our own disco-game is made with JavaScript and it communicates with the service as wanted (high score, save, load). Game is included in the repository.
+Our own club-game is made with JavaScript and it communicates with the service as wanted (high score, save, load). Game is included in the repository and can be found with [this url](https://wsd2017gamestore.herokuapp.com/static/clubescape/index.html).
 
 #### Mobile Friendly
-Our application works well with both traditional computers and mobile devices. Specific attention is paid to make the application work well with mobile devices. It works with devices with varying screen width and is usable with touch based devices.
+Our application works well with both traditional computers and mobile devices. Specific attention is paid to make the application work well also with mobile devices. It works with devices with varying screen width and is usable with touch based devices.
 
 #### Social media sharing
-Games can be shared in two social media sites - Facebook and Twitter. Metadata is added correctly, so when sharing, game name, description an image is shown and accessed with the (correct) link.
+Games can be shared in two social media sites - Facebook and Twitter. Metadata is added correctly, so when sharing, game name, description an image are shown and the game can be accessed with the (correct) link.
 
 
 ### Dividing work between team members
@@ -66,6 +66,7 @@ During this project we did not want to give the members of team one big specific
 * Game categories
 * Some authorization
 * Defining models and templates
+* Testing
 
 #### Katri
 * Games to the database -functionality
@@ -77,6 +78,7 @@ During this project we did not want to give the members of team one big specific
 * Authorization
 * Styling (navigation and some random parts)
 * Defining models and templates
+* Testing
 
 #### Alan
 * Developer functionality
