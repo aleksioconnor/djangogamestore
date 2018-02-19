@@ -71,14 +71,14 @@ def signup(request):
     else:
         # Imported from forms.py
         form = SignUpForm()
-        #TODO: allaoleva form:form contextina eteenpäin
+
     return render(request, 'registration/index.html', {'form': form})
 
 def logout_view(request):
     logout(request)
 
 def activate(request):
-    #get the key and and the uid from URL parameters
+    # get the key and and the uid from URL parameters
     key = request.GET.get('key', '')
     uid = request.GET.get('uid', '')
     username = 'user.id'

@@ -73,7 +73,7 @@ def info(request, pk):
 
             return render(request, 'developer/info.html', context)
 
-# Takes the template from store/game_form.html TODO: change this
+
 class GameEdit(UpdateView):
     model = Game
     fields = ['name', 'price', 'url', 'description']
