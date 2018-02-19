@@ -1,6 +1,9 @@
 {% extends "base.html" %}
-<!-- TODO: Siirrä tämä tiedosto oikeaan template-kansioon" -->
-<!-- TODO: Validaatio sille, että vain oikea kehittäjä voi muokata tätä peliä -->
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
+
 {% block content %}
 
 <form action="" method="post">
