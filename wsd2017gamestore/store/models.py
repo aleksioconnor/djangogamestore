@@ -7,7 +7,7 @@ class Category(models.Model):
       return self.name
 
 class Game(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     # pub_date = models.DateTimeField('date published')
     price = models.FloatField(default=0)
     url = models.URLField(max_length=200)
