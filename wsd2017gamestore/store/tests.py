@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 class GameTestCase(TestCase):
   def setUp(self):
     # Create two categories
-    indie = Category.objects.create(name='Indie')
+    indie = Category.objects.create(name='Indie1')
     action = Category.objects.create(name='Action')
 
     # Create three games
@@ -23,7 +23,7 @@ class GameTestCase(TestCase):
     owned_games = BoughtGames.objects.create(game=action_man, user=user)
 
   def test_game_creation(self):
-    indie = Category.objects.create(name='Indie')
+    indie = Category.objects.create(name='Indie12')
     blue_water = Game.objects.create(name="Blue water", price=1, url='http://google.com', category=indie)
     self.assertEqual(blue_water.name, "Blue water")
     self.assertEqual(blue_water.price, 1)
