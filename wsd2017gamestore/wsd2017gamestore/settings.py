@@ -18,15 +18,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
+# Destination where static files are copied
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# url where staticfiles are served from
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# where static gatherer looks for static files
+STATICFILES_DIRS = (
+	os.path.join(BASE_DIR, "static"),
+)
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    './static/bootstrap/'
-]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
