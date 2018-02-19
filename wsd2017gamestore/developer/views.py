@@ -63,7 +63,7 @@ def info(request, pk):
     else:
         if(not user_is_developer):
             # redirect to dev-page
-            return HttpResponseRedirect('/dev')
+            raise Http404("You don't have the rights to view this games' statistics.")
         else:
             #get current game's stats
             single_game_stats = BoughtGames.objects.all().filter(game = this_game)
