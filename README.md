@@ -111,6 +111,10 @@ If you want to run the project locally
   1. Open python shell using command ```python manage.py shell```
   2. Import Category-model ```from store.models import Category```
   3. add wanted categories ```Category.objects.create(name='CATEGORY-NAME')```
+  4. add correct groups
+  ```from django.contrib.auth.models import Group```
+  ```Group.objects.create(name="Developer")```
+  ```Group.objects.create(name="Player")```
 7. Open the gamestore locally using command ```python manage.py runserver```
 
 When adding new users to the gamestore, the the link in the email must be changed from https -> http, since Heroku is using a secure connection, but localhost is not.

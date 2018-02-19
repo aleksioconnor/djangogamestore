@@ -1,4 +1,4 @@
-from common.util import user_is_developer
+from common.util import user_is_developer, correct_developer
 from django import template
 
 # Template tag definition
@@ -11,3 +11,7 @@ register = template.Library()
 def user_is_developer_filter(user):
   return user_is_developer(user)
 
+# Checks if user is the owner of the game
+@register.filter(name='correct_developer')
+def correct_developer_filter(user, game):
+  return correct_developer(user, game)
