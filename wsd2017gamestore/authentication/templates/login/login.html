@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
+
 {% block content %}
 <h2>Login</h2>
 <form method="post"> <!-- POST-request the form -->
