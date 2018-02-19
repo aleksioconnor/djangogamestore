@@ -4,7 +4,6 @@ from .models import Profile
 from django.urls import resolve
 from django.test.client import Client
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
 import string
 import random
 
