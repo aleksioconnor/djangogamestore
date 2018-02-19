@@ -78,7 +78,6 @@ During this project we did not want to give the members of team one big specific
 * Styling (navigation and some random parts)
 * Defining models and templates
 
-
 #### Alan
 * Developer functionality
 * Email-verification
