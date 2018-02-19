@@ -1,3 +1,5 @@
+# AKA Gamestore
+
 ## Team
   * 426736 Aleksi O'Connor
   * 530347 Katri Saarinen
@@ -6,13 +8,53 @@
 ## Final Submission
 
 ### Functional Requirements
+Below all described all the functional requirements we have implemented.
+
+#### Minimum functional requirements
+User can register as either a player or developer. Players can buy games and then play them, see high scores and record their scores to the high score listing.
+Developers can add games for everyone to buy and play, see game purchase statistics, edit and delete games.
 
 #### Authentication
-Registering, logging in and logging out works both for developers and for players. These are implemented using Django Auth. Email verification also works and actually sends a proper email to the user.
+Registering, logging in and logging out works for both developers and players. These are implemented using Django Auth. Email verification also works and actually sends a proper email to the user with a verification link. The verification has to be done in order for the user to be able to buy or add games.
+
+#### Basic player functionalities
+Games can be bought using the course's mockup payment service. After purchase, the games can be played and the game/service works as wanted (game-state can be saved and loaded, high score is received, frame-size is received from the settings).
+User can only play a game that is bought (or self-developed) and if the user is logged in.
+Games are in specific categories and own games are listed in the beginning of the front page.
+
+#### Basic developer functionalities
+A (logged in) developer can add a new game (name, price, url, description). Own (and only own!) developed games can be edited or deleted and the game sale statistics (when the game has been bought) can be seen.
+
+#### Game/service interaction
+When a player finishes playing a game (or presses submit score), the postMessage is sent as wanted. Messages from service to the game is implemented as well.
+The game highscores are served via RESTful API. The gameview shows 5 highest scores made by anyone that has played the game.
+
+#### Quality of Work
+The application is structured in a meaningful way and functions are commented properly. DRY-principle is followed and Model-View-Template separation is used.
+Meaningful tests are created to make sure that the application works as wanted and required.
+
+#### Non-functional requirements
+Project plan was created in the beginning of the project and can be found below.
+Documentation is done according to the instructions and requirements.
+
+#### Save/load and resolution feature
+The service of our gamestore supports saving and loading for games with the simple message protocol described in Game Developer Information.
+
+#### RESTful API
+RESTful API is used to serve game highscores.
+
+#### Own game
+Our own disco-game is made with JavaScript and it communicates with the service as wanted (high score, save, load). Game is included in the repository.
+
+#### Mobile Friendly
+Our application works well with both traditional computers and mobile devices. Specific attention is paid to make the application work well with mobile devices. It works with devices with varying screen width and is usable with touch based devices.
+
+#### Social media sharing
+Games can be shared in two social media sites - Facebook and Twitter. Metadata is added correctly, so when sharing, game name, description an image is shown and accessed with the (correct) link.
 
 
 ### Dividing work between team members
-During this project we did not want to give the members of team one big specific part that they would handle alone – we all wanted to learn and understand all parts of the project. We met up every tuesday and went through the things we would need to do each week - these tasks were given to different members of the team and some tasks were also completed in pairs. The first week we worked mainly together from Aleksi’s computer since starting the project could be done best using only one computer. Working in pairs allowed us to discuss the current tasks more and understand more deeply what is the current problem and what is the best solution to it – it also makes it a bit more difficult to define who did what. A good example of a task given to a member could have been “add the iframe-functionality to gameview and handle the different messages received from it” or “add the payment functionality to the gameview so users can buy games”. The tasks were divided evenly between team members each week and all in all everyone completed approximately the same amount of work for the project.
+During this project we did not want to give the members of team one big specific part that they would handle alone – we all wanted to learn and understand all parts of the project. We met up every Tuesday and went through the things we would need to do each week - these tasks were given to different members of the team and some tasks were also completed in pairs. The first week we worked mainly together from Aleksi’s computer since starting the project could be done best using only one computer. Working in pairs allowed us to discuss the current tasks more and understand more deeply what is the current problem and what is the best solution to it – it also makes it a bit more difficult to define who did what. A good example of a task given to a member could have been “add the iframe-functionality to gameview and handle the different messages received from it” or “add the payment functionality to the gameview so users can buy games”. The tasks were divided evenly between team members each week and all in all everyone completed approximately the same amount of work for the project.
 
 #### Aleksi
 * User authentication
@@ -36,7 +78,6 @@ During this project we did not want to give the members of team one big specific
 * Styling (navigation and some random parts)
 * Defining models and templates
 
-
 #### Alan
 * Developer functionality
 * Email-verification
@@ -44,13 +85,18 @@ During this project we did not want to give the members of team one big specific
 * Most styling
 * Some authorization
 * Defining models and templates
+* Editing and deleting games (for developers)
 
 ### AKA Gamestore
-The gamestore can be accessed [here](https://wsd2017gamestore.herokuapp.com/ “gamestore”). On the frontpage you can see the store with all the games under different categories. Clicking a game will show the description of it and will ask the user to register or log in.
+The gamestore can be accessed [here](https://wsd2017gamestore.herokuapp.com/). On the frontpage you can see the store with all the games under different categories. Clicking a game will show the description of it and will ask the user to register or log in.
 On top of the page there is a navigation bar. On the right side of the navbar you can click the buttons to login with your existing account or register a new account as a customer (can only buy and play games) or a developer (can add own games and buy others’ games) of the gamestore.
+
 After registration the user will receive a verification email to verify as a customer or developer. Now the user can buy games or add their owns to the store (depending on their user group). A logged in user can see all his/her games (bought and developed) in the separately on the frontpage.
 Clicking an interesting game will open it up and show to description. A game can be bought using the buy game -button and after the purchase the user can play game and see the game high scores. The game can also be shared on social media (Facebook and Twitter) using the buttons below the game-frame.
+
 A developer can add a game using the developer view, which can be accessed from Developer-button on the left side of the navbar. In the developer-view the developer can also edit games, see their purchase statistics and delete games.
+
+A user can log out using the logout-button on the far right of the navbar.
 
 
 ## Project Plan

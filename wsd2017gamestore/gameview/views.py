@@ -139,12 +139,14 @@ def buy_game(request, game_id):
 			'current_host': current_host
 		}
 
+		# sending context to payment-template
 		return render(request, 'gameview/payment.html', context)
 	# If user owns game, redirect to home page.
 	else:
+		# redirecting to frontpage
 		return redirect('/')
 
-# Handles what happens after payment is received
+# Handles what happens after payment is received, if it was successful
 @login_required
 def successful_payment(request, game_id):
 	pid = request.GET['pid'] # payment ID
@@ -178,19 +180,13 @@ def successful_payment(request, game_id):
 	else:
 		return render(request, 'gameview/error.html', context)
 
-# Handles erros in payment
+# Handles what happens after payment is received, if there was an error
 @login_required
-def error_payment(request, game_id):
-	pid = request.GET['pid'] # payment ID
-	ref = request.GET['ref'] # reference to payment
-	url_checksum = request.GET['checksum']
-
-	secret_key = "5ba99a03e46a687041b16ec552bcdf9c"
-	checksum_str = "pid={}&ref={}&result={}&token={}".format(pid, ref, "error", secret_key)
-
-	m = md5(checksum_str.encode("ascii"))
-	checksum = m.hexdigest()
-
+def error_payment(request):
+	# payment ID
+	pid = request.GET['pid']
+	# game_id from pid
+	game_id = pid.split('-')[1]
 	game = Game.objects.get(id=game_id)
 	context = {
 		'game': game,
@@ -198,8 +194,13 @@ def error_payment(request, game_id):
 
 	return render(request, 'gameview/error.html', context)
 
+# Handles what happens after payment is received, if it was canceled
 @login_required
-def cancel_payment(request, game_id):
+def cancel_payment(request):
+	# payment ID
+	pid = request.GET['pid']
+	# game_id from pid
+	game_id = pid.split('-')[1]
 	game = Game.objects.get(id=game_id)
 	context = {
 		'game': game,
