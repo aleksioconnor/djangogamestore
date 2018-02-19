@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
@@ -16,7 +16,10 @@ from .models import GameState
 # Renders the main view
 def index(request, game_id):
 	# Checks what game is being currently viewed from the id
-	current_game = Game.objects.get(id=game_id)
+	try:
+		current_game = Game.objects.get(id=game_id)
+	except Game.DoesNotExist:
+		raise Http404("Game does not exist")
 
 	# Gets users id
 	user_id = request.user.id
