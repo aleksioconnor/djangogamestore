@@ -69,11 +69,11 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'wsd2017gamestore@gmail.com'
-EMAIL_HOST_PASSWORD = 'JooJoo123'
 EMAIL_PORT = 587
 
 ROOT_URLCONF = 'wsd2017gamestore.urls'
