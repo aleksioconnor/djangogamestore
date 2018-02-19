@@ -31,7 +31,7 @@ The game high scores are served via RESTful API. The gameview shows 5 highest sc
 
 #### Quality of Work
 The application is structured in a meaningful way and functions are commented properly. DRY-principle is followed and Model-View-Template separation is used.
-Meaningful tests are created to make sure that the application works as wanted and is required.
+Meaningful tests are created to make sure that the application works as wanted and is required. Tests can be ran using the ```python manage.py test``` -command.
 
 #### Non-functional requirements
 Project plan was created in the beginning of the project and can be found in the below section.
