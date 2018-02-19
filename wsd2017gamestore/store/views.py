@@ -13,10 +13,11 @@ def index(request):
 
 	if request.user.is_authenticated():
 		bought_games = []
-		# getting game models from bought games
+		# getting game models from user's bought games
 		for i in BoughtGames.objects.all().filter(user=request.user):
 			bought_games.append(i.game)
 
+		# games the user has developed
 		developed_games = Game.objects.all().filter(developer_id=user_id)
 		# combining bought and developed games
 		combined_games = list(chain(bought_games, developed_games))
