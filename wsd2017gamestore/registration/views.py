@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.contrib.auth.models import Group
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
@@ -40,7 +40,8 @@ def signup(request):
             user.save()
 
             current_host = request.META.get('HTTP_HOST')
-            activation_url = 'http://{current_host}/signup/activation?key={key}&uid={uid}'.format(current_host=current_host, key=key, uid = user.id)
+            #Is secure now so doesn't work in localhost any more.
+            activation_url = 'https://{current_host}/signup/activation?key={key}&uid={uid}'.format(current_host=current_host, key=key, uid = user.id)
             # Prep the message
             message = render_to_string('registration/email_activation.html', {
                 'name': username,
@@ -86,4 +87,4 @@ def activate(request):
         current_user.is_activated = True
         current_user.save()
 
-    return HttpResponse('Your email has been confirmed and your account has been activated.')
+    return HttpResponseRedirect('/')
