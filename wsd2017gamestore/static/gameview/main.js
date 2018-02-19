@@ -3,6 +3,7 @@
 // Adds event listener to window, which will monitor any incoming messages
 // from the iFrame
 window.addEventListener("message", function (message) {
+  var gameframe = $("#gameframe");
   switch (message.data.messageType) {
     // If message type is score, save high score
     case "SCORE":
@@ -21,7 +22,6 @@ window.addEventListener("message", function (message) {
 
     // change the size of the iframe according to options received from iFrame
     case "SETTING":
-      var gameframe = $("#gameframe");
       gameframe.css("height", message.data.options.height + "px");
       gameframe.css("width", message.data.options.width + "px");
       gameframe.css("background-color", "white");
@@ -36,7 +36,7 @@ window.addEventListener("message", function (message) {
  * @param { object }
  *
  * Function changes javascript object to string and sends it to
- * the endpoint 'state' to save the game state. See /gameview/views for
+ * the endpoint "state" to save the game state. See /gameview/views for
  * details.
  */
 
@@ -46,7 +46,7 @@ window.addEventListener("message", function (message) {
       type: "POST",
       data: {
         state: messageAsString,
-        csrfmiddlewaretoken: token,
+        csrfmiddlewaretoken: token
         },
       url: "state/",
       success: function (result) {
@@ -65,7 +65,7 @@ window.addEventListener("message", function (message) {
 /**
  * @param { int }
  *
- * Function sends score to 'score' endpoint. See /gameview/views for details.
+ * Function sends score to "score" endpoint. See /gameview/views for details.
  * On success, updates high score list.
  * On error, sends the iframe a message.
  */
@@ -73,12 +73,12 @@ window.addEventListener("message", function (message) {
     $.ajax({
       type: "POST",
       data: {
-        'score': score,
-        'csrfmiddlewaretoken': token,
+        "score": score,
+        "csrfmiddlewaretoken": token
       },
       url: "score/",
       success: function (result) {
-        getHighScores()
+        getHighScores();
       },
       error: function (error) {
         var iframe = $("#gameframe")[0];
@@ -87,11 +87,11 @@ window.addEventListener("message", function (message) {
         message.info = "Something went wrong with submitting the high score.";
         iframe.contentWindow.postMessage(message, "*");
       }
-    })
+    });
   }
 
 /**
- * Function requests newest save from 'load' endpoint.
+ * Function requests newest save from "load" endpoint.
  * On success, loads the most recent save.
  * On failure, sens a message to the iframe.
  */
@@ -101,20 +101,20 @@ window.addEventListener("message", function (message) {
       url: "load/",
       success: function (result) {
         var gameState = (JSON.parse(result[0].data));
-        var iframe = $("#gameframe")[0]
+        var iframe = $("#gameframe")[0];
         var message = {};
         message.messageType = "LOAD";
         message.gameState = gameState;
         iframe.contentWindow.postMessage(message, "*");
         },
       error: function(result) {
-        var iframe = $("#gameframe")[0]
+        var iframe = $("#gameframe")[0];
         var message = {};
         message.messageType = "ERROR";
         message.info = "No saved games found";
         iframe.contentWindow.postMessage(message, "*");
       }
-    })
+    });
   }
 
 /**
@@ -127,16 +127,16 @@ window.addEventListener("message", function (message) {
       type: "GET",
       url: "scores/",
       success: function(result) {
-        $('#scores').empty()
+        $("#scores").empty();
         $.each(result, function(i, n) {
-          $('#scores').append(n.player + ": " + n.score + "<br>")
-        })
+          $("#scores").append(n.player + ": " + n.score + "<br>");
+        });
       },
       error: function(error) {
-        $('#scores').empty();
-        $('#scores').html("<div class='error'> Something went wrong loading the high scores.</div>");
+        $("#scores").empty();
+        $("#scores").html("<div class='error'> Something went wrong loading the high scores.</div>");
       }
-    })
+    });
   }
 
   function checkForSaves() {
@@ -144,18 +144,18 @@ window.addEventListener("message", function (message) {
       type: "GET",
       url: "load/",
       success: function(result) {
-        var container = $('#loadgame');
-        container.html('<div>You have saved games available, click here to load them.</div>')
-        container.on('click touch', function() {
+        var container = $("#loadgame");
+        container.html("<div class='saved'>You have saved games available, click here to load them.</div>");
+        container.on("click touch", function() {
           container.empty();
           requestLoad();
         });
       }
-    })
+    });
   }
 
 // Document ready for retrieving high scores
 $(document).ready(function(){
   getHighScores();
   checkForSaves();
-})
+});

@@ -12,7 +12,7 @@
   <div class='games-list'>
     {% for owned_game in owned_games %}
     <div class='game-container'>
-      <span class="multiline"> <a href='/game/{{owned_game.id}}'>{{ owned_game.name }} </></span>
+      <span class="multiline"> <a href='/game/{{owned_game.id}}'>{{ owned_game.name }} <a/></span>
       <a href='/game/{{owned_game.id}}'>
         <div class='game-image'></div>
       </a>
@@ -39,4 +39,5 @@
       {% endfor %}
       </div> <!-- games-list row -->
   {% endfor %}
+</div>
 {% endblock %}

@@ -182,7 +182,7 @@ def successful_payment(request, game_id):
 
 # Handles what happens after payment is received, if there was an error
 @login_required
-def error_payment(request):
+def error_payment(request, game_id):
 	# payment ID
 	pid = request.GET['pid']
 	# game_id from pid
@@ -196,7 +196,7 @@ def error_payment(request):
 
 # Handles what happens after payment is received, if it was canceled
 @login_required
-def cancel_payment(request):
+def cancel_payment(request, game_id):
 	# payment ID
 	pid = request.GET['pid']
 	# game_id from pid

@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.conf.urls import *
 from django.contrib import admin
 from django.conf import settings
+from store import views as store_views
 
 
 urlpatterns = [
@@ -27,3 +28,6 @@ urlpatterns = [
 	url(r'^game/', include('gameview.urls')),
 	url(r'^dev/', include('developer.urls')),
 ]
+
+handler404 = store_views.error_404
+handler500 = store_views.error_500

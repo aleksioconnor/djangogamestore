@@ -33,3 +33,11 @@ def index(request):
 		'categories' : categories,
 	}
 	return render(request, 'store/index.html', context)
+
+def error_404(request):
+	data = {}
+	return render(request, 'store/error404.html', data)
+
+def error_500(request):
+	data = {}
+	return render(request, 'store/error500.html', data)
