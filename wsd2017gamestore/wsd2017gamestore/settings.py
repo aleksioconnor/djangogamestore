@@ -41,6 +41,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['wsd2017gamestore.herokuapp.com','127.0.0.1','localhost']
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Application definition
 
