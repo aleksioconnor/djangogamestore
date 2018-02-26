@@ -59,6 +59,6 @@ def index(request):
 		'owned_games' : owned_games,
 		'categories' : categories,
 		'user_has_profile' : user_has_profile,
-		'form' : form
+		'form' : form,
 	}
 	return render(request, 'store/index.html', context)

@@ -9,7 +9,7 @@
   <div class='green'></div>
   <h1>AKA Gamestore</h1>
   <div class='info'><p>
-    Welcome to the AKA Gamestore! We have thousands of games from Action to Indie and everything in-between. Enjoy exclusive deals, automatic game updates and other great perks. This is the ultimate entertainment platform. Play, connect, create and more! Our unlimited passion for technology, content and services,  and relentless pursuit of innovation, drives us to deliver ground-breaking new excitement and entertainment in ways that only AKA Gamestore can.
+    {% if user.is_authenticated %} Hi <b>{{user}}</b> and {% endif %} Welcome to the AKA Gamestore! We have thousands of games from Action to Indie and everything in-between. Enjoy exclusive deals, automatic game updates and other great perks. This is the ultimate entertainment platform. Play, connect, create and more! Our unlimited passion for technology, content and services,  and relentless pursuit of innovation, drives us to deliver ground-breaking new excitement and entertainment in ways that only AKA Gamestore can.
 Everything we do, is to move you emotionally.
     </p></div>
   {% if not user_has_profile %}
