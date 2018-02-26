@@ -163,6 +163,7 @@ def successful_payment(request, game_id):
 	checksum = m.hexdigest()
 
 	buyer_id = pid.split('-')[0]
+	gameid = pid.split('-')[1]
 	game = Game.objects.get(id=game_id)
 	current_user = request.user
 
@@ -171,9 +172,9 @@ def successful_payment(request, game_id):
 	}
 
 	if request.user.is_authenticated():
-		if url_checksum == checksum and str(current_user.id) == buyer_id:
+		if url_checksum == checksum and str(current_user.id) == buyer_id and str(game_id) == gameid:
 
-			user = User.objects.get(id=current_user.id) # Is this equal to current_user?
+			user = User.objects.get(id=current_user.id)
 			bought_game = BoughtGames(game = game, user = user)
 			bought_game.save()
 

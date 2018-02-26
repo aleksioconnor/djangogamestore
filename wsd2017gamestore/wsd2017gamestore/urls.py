@@ -26,4 +26,5 @@ urlpatterns = [
 	url(r'^auth/', include('authentication.urls')),
 	url(r'^game/', include('gameview.urls')),
 	url(r'^dev/', include('developer.urls')),
+    url("^soc/", include("social_django.urls", namespace="social"))
 ]

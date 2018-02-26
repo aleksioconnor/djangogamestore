@@ -1,4 +1,9 @@
 /* Styling for forms altogether*/
+
+#lgn-btn {
+  margin-top: 20px
+}
+
 label {
   font-weight: bold;
   padding-right: 10px;
