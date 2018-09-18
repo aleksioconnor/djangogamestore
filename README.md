@@ -11,7 +11,7 @@ A user can log out using the logout-button on the far right of the navbar.
 
 ### Running the project locally
 If you want to run the project locally
-1. Clone the project from GitLab using SSH: ```git@version.aalto.fi:pirdila1/wsd2017-gamestore.git```
+1. Clone the project
 2. Activate Python environment using command ```source ~/djangoenv/bin/activate```
 3. Run command ```pip install -r requirements.txt```
 4. Migrate using command ```python manage.py migrate```
